@@ -2,7 +2,11 @@ import React from 'react'
 
 const About = () => {
   return (
-    <div>This is my about</div>
+    <>
+      <div style={{ padding: "5px" }}>
+        <h1>This is my about page.</h1>
+      </div>
+    </>
   )
 }
 
