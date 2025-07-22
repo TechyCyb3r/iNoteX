@@ -1,5 +1,5 @@
 import './App.css'
-import React from 'react'
+import NoteState from './components/Context/notes/NoteState'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
@@ -7,18 +7,22 @@ import About from './components/About'
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
+      <NoteState>
+        <BrowserRouter>
+          <Navbar />
+          
+          <div className="container">
+            <Routes>
+              <Route path='/' element={<Home />} />
+            </Routes>
 
-        <Routes>
-          <Route path='/' element={<Home />} />
-        </Routes>
+            <Routes>
+              <Route path='/about' element={<About />} />
+            </Routes>
+          </div>
 
-        <Routes>
-          <Route path='/about' element={<About />} />
-        </Routes>
-
-      </BrowserRouter>
+        </BrowserRouter>
+      </NoteState>
     </>
   )
 }
