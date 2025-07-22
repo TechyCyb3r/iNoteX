@@ -12,7 +12,7 @@ function App() {
       <NoteState>
         <BrowserRouter>
           <Navbar />
-          <Alert message=""/>
+          <Alert message="todo"/>
           
           <div className="container">
             <Routes>
