@@ -1,7 +1,7 @@
 import React from 'react'
 import Icon from '@mdi/react';
 import { mdiTrashCan, mdiPencil } from '@mdi/js';
-import styles from './Css/NoteItem.module.css';
+import styles from '../Css/NoteItem.module.css';
 
 const NoteItem = (props) => {
     const { note } = props;
