@@ -27,9 +27,6 @@ const AddNote = () => {
                     <label htmlFor="exampleInputPassword1" className="form-label">Description</label>
                     <input type="text" className="form-control" id="desc" name="desc" onChange={onChange} />
                 </div>
-                <div className="mb-3 form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                </div>
                 <button type="submit" className="btn btn-primary" onClick={handleClick}>Add Note</button>
             </form>
             <h1>Your notes</h1>
