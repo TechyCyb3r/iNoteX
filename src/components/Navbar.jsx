@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-
 const Navbar = () => {
-    let location = useLocation()
-    useEffect(() => {
-        location.pathname
-    }, [location]);
+    let location = useLocation();
     const isActive = (path) => {
         return location.pathname === path ? "active" : "";
     }
