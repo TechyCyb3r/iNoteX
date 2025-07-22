@@ -24,7 +24,6 @@ router.post('/addnote', fetchuser, [
 ], async (req, res) => {
 
     try {
-
         const { title, description, tag } = req.body;
 
         // If there are errors, return Bad request and the errors
@@ -96,7 +95,7 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
         res.json({"Success": "Note has been deleted", note:note});
 
     } catch (error) {
-        // console.log(error.message);
+        console.error(error.message);
         res.status(500).send("Internal Server Error")
     }
 })

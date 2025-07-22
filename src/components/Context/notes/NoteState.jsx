@@ -1,3 +1,4 @@
+import { set } from "mongoose";
 import NoteContext from "./NoteContext";
 import React, { useState } from 'react';
 
@@ -20,20 +21,22 @@ const NoteState = (props) => {
         });
         const json = await response.json();
         console.log(json);
+        setNotes(json);
     }
 
     // addNotes all notes
-    const addNote = async (title, desc, tag) => {
+    const addNote = async (title, description, tag) => {
         // TODO API call
-        await fetch(`${host}/api/notes/addnote`, {
+        const response = await fetch(`${host}/api/notes/addnote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
             },
-            body: JSON.stringify({title, desc, tag})
+            body: JSON.stringify({title, description, tag})
         });
-        // const json = response.json();
+        const json = response.json();
+        setNotes(notes.concat(json));
 
 
         console.log("Adding a new note");
@@ -41,7 +44,7 @@ const NoteState = (props) => {
             "_id": "687f06c0dab9fsdfs15fa1011e5c",
             "user": "687b392ebd65f38f26bb3590",
             "title": title,
-            "description": desc,
+            "description": description,
             "tag": tag,
             "date": "2025-07-22T03:34:24.970Z",
             "__v": 0
