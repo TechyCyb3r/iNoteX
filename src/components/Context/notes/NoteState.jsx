@@ -11,7 +11,8 @@ const NoteState = (props) => {
 
     // Get all notes
     const getNotes = async () => {
-        // TODO API call
+
+        // Calling API to get all notes
         const response = await fetch(`${host}/api/notes/fetchallnotes`, {
             method: "GET",
             headers: {
@@ -26,7 +27,8 @@ const NoteState = (props) => {
 
     // addNotes all notes
     const addNote = async (title, description, tag) => {
-        // TODO API call
+
+        // Calling API to add a note
         const response = await fetch(`${host}/api/notes/addnote`, {
             method: "POST",
             headers: {
@@ -38,24 +40,24 @@ const NoteState = (props) => {
         const json = await response.json();
         setNotes(notes.concat(json));
 
-
-        console.log("Adding a new note");
-        const note = {
-            "_id": "687f06c0dab9fsdfs15fa1011e5c",
-            "user": "687b392ebd65f38f26bb3590",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "date": "2025-07-22T03:34:24.970Z",
-            "__v": 0
-        }
-        setNotes(notes.concat(note));
+        //Adding a new note locally
+        // console.log("Adding a new note");
+        // const note = {
+        //     "_id": "687f06c0dab9fsdfs15fa1011e5c",
+        //     "user": "687b392ebd65f38f26bb3590",
+        //     "title": title,
+        //     "description": description,
+        //     "tag": tag,
+        //     "date": "2025-07-22T03:34:24.970Z",
+        //     "__v": 0
+        // }
+        // setNotes(notes.concat(note));
     }
 
 
     // Delete a note
     const deleteNote = async (id) => {
-        // TODO API call
+        // Calling API to delete a note
         await fetch(`${host}/api/notes/deletenote/${id}`, {
             method: "DELETE",
             headers: {
@@ -69,7 +71,6 @@ const NoteState = (props) => {
     }
 
     // Edit a note
-
     const editNote = async (id, title, description, tag) => {
         // API call to update the note
         await fetch(`${host}/api/notes/updatenote/${id}`, {
@@ -80,6 +81,7 @@ const NoteState = (props) => {
             },
             body: JSON.stringify({title, description, tag})
         });
+
         // const json = response.json();
         const updateNotes = notes.map((note) => {
             if (note._id === id) {
@@ -88,18 +90,6 @@ const NoteState = (props) => {
             return note;
         });
         setNotes(updateNotes);
-
-
-        // // Logic to edit in client 
-        // for (let index = 0; index < notes.length; index++) {
-        //     const element = notes[index];
-        //     if (element._id === id) {
-        //         element.title = title;
-        //         element.description = description;
-        //         element.tag = tag;
-        //         break;
-        //     }
-        // }
     }
 
     return (

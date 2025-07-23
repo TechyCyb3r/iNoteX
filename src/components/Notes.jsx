@@ -3,8 +3,10 @@ import noteContext from './Context/notes/NoteContext'
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
 
-function Notes() {
+function Notes(props) {
     const { notes, getNotes } = useContext(noteContext);
+    const { showAlert } = props;
+
     useEffect(() => {
         getNotes();
     }, []);
@@ -15,10 +17,10 @@ function Notes() {
     };
     return (
         <>
-            <AddNote />
+            <AddNote showAlert={showAlert} />
             <div className="row my-3">
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} note={note} updateNote={updateNote}  />;
+                    return <NoteItem key={note._id} note={note} showAlert={showAlert} updateNote={updateNote}  />;
                 })}
             </div>
         </>
