@@ -54,8 +54,15 @@ const NoteState = (props) => {
 
 
     // Delete a note
-    const deleteNote = (id) => {
+    const deleteNote = async (id) => {
         // TODO API call
+        await fetch(`${host}/api/notes/deletenote/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
+            }
+        });
         const updatedNotes = notes.filter((note) => note._id !== id);
         setNotes(updatedNotes);
         console.log("Deleting note with id: " + id);
@@ -63,30 +70,36 @@ const NoteState = (props) => {
 
     // Edit a note
 
-    const editNote = async (id, title, des, tag) => {
+    const editNote = async (id, title, description, tag) => {
         // API call to update the note
         await fetch(`${host}/api/notes/updatenote/${id}`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
             },
-            body: JSON.stringify({title, des, tag})
+            body: JSON.stringify({title, description, tag})
         });
         // const json = response.json();
-
-
-        // Logic to edit in client 
-        for (let index = 0; index < notes.length; index++) {
-            const element = notes[index];
-            if (element._id === id) {
-                element.title = title;
-                element.description = des;
-                element.tag = tag;
-                break;
+        const updateNotes = notes.map((note) => {
+            if (note._id === id) {
+                return { ...note, title, description, tag };
             }
-        }
-        setNotes([...notes]);
+            return note;
+        });
+        setNotes(updateNotes);
+
+
+        // // Logic to edit in client 
+        // for (let index = 0; index < notes.length; index++) {
+        //     const element = notes[index];
+        //     if (element._id === id) {
+        //         element.title = title;
+        //         element.description = description;
+        //         element.tag = tag;
+        //         break;
+        //     }
+        // }
     }
 
     return (

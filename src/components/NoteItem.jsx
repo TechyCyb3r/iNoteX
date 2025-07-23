@@ -6,8 +6,8 @@ import noteContext from './Context/notes/NoteContext';
 
 const NoteItem = (props) => {
     const context = useContext(noteContext);
-    const { deleteNote } = context;
-    const { note } = props;
+    const { deleteNote} = context;
+    const { note, updateNote } = props;
 
     return (
         <div className="col-md-3">
@@ -15,10 +15,10 @@ const NoteItem = (props) => {
                 <div className="card-body">
                     <h5 className="card-title">{note.title}</h5>
                     <p className="card-text">{note.description.substring(0, 20)} ...</p>
-                    <Icon className={`${styles.icon} mx-1`} path={mdiTrashCan} size={1} onClick={()=>{
+                    <Icon className={`${styles.icon} mx-1`} path={mdiTrashCan} size={1} onClick={() => {
                         deleteNote(note._id);
                     }} />
-                    <Icon className={`${styles.icon} mx-2`} path={mdiPencil} size={1}/>
+                    <Icon className={`${styles.icon} mx-2`} note={note} path={mdiPencil} onClick={() => updateNote(note)} size={1} />
                 </div>
             </div>
         </div>

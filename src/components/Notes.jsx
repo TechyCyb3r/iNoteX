@@ -8,12 +8,17 @@ function Notes() {
     useEffect(() => {
         getNotes();
     }, []);
+
+    const updateNote = (currentNote) => {
+        console.log("Editing note:", currentNote);
+        // Add logic to open modal or edit form
+    };
     return (
         <>
             <AddNote />
             <div className="row my-3">
                 {notes.map((note) => {
-                    return <NoteItem key={note._id} note={note} />;
+                    return <NoteItem key={note._id} note={note} updateNote={updateNote}  />;
                 })}
             </div>
         </>
