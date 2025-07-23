@@ -5,9 +5,12 @@ import styles from '../Css/NoteItem.module.css';
 import noteContext from './Context/notes/NoteContext';
 
 const NoteItem = (props) => {
+    
     const context = useContext(noteContext);
     const { deleteNote } = context;
     const { note, updateNote, showAlert } = props;
+
+
     const handleDeleteNote = () => {
         deleteNote(note._id);
         showAlert("Note deleted successfully");
