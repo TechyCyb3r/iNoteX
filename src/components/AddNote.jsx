@@ -11,7 +11,7 @@ const AddNote = (props) => {
         e.preventDefault();
 
         if (!note.description.trim()) {
-            return props.showAlert("Description cannot be empty");
+            return props.showAlert("Description cannot be empty", "warning");
         }
 
         const fTitle = note.title.trim() || "Undefined";
@@ -19,7 +19,7 @@ const AddNote = (props) => {
         const fDescription = note.description.trim();
 
         addNote(fTitle, fDescription, fTag);
-        props.showAlert("Note added successfully");
+        props.showAlert("Note added successfully", "success");
         
         setNote({ title: "", description: "", tag: "" });
     };

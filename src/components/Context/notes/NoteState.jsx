@@ -1,6 +1,5 @@
-import { set } from "mongoose";
 import NoteContext from "./NoteContext";
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 
 const NoteState = (props) => {
@@ -21,7 +20,6 @@ const NoteState = (props) => {
             }
         });
         const json = await response.json();
-        console.log(json);
         setNotes(json);
     }
 
@@ -55,7 +53,6 @@ const NoteState = (props) => {
         });
         const updatedNotes = notes.filter((note) => note._id !== id);
         setNotes(updatedNotes);
-        console.log("Deleting note with id: " + id);
     }
 
     // Edit a note

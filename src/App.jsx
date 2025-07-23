@@ -8,27 +8,28 @@ import About from './components/About'
 import Alert from './components/Alert'
 
 function App() {
-  const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState(null);
+  const showAlert = (msg, type) => {
+    setAlertMessage({ msg, type });
 
-  const showAlert = (message) => {
-    setAlertMessage(message);
-    
-    // setTimeout(() => {
-    //   setAlertMessage(message);
-    // }, 4000);
+    setTimeout(() => {
+      setAlertMessage(null);
+    }, 3000);
   };
+
+
 
   return (
     <>
       <NoteState>
         <BrowserRouter>
           <Navbar />
-          <Alert message={alertMessage} />
+           <Alert message={alertMessage?.msg} type={alertMessage?.type} />
 
           <div className="container">
             <Routes>
               <Route path='/' element={<Home showAlert={showAlert} />} />
-        
+
               <Route path='/about' element={<About />} />
             </Routes>
           </div>

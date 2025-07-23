@@ -5,31 +5,34 @@ import styles from '../Css/NoteItem.module.css';
 import noteContext from './Context/notes/NoteContext';
 
 const NoteItem = (props) => {
-    
+
     const context = useContext(noteContext);
     const { deleteNote } = context;
     const { note, updateNote, showAlert } = props;
 
 
     const handleDeleteNote = () => {
+        const confirm = window.confirm("Are you sure you want to delete this note?");
+        if (!confirm) return;
         deleteNote(note._id);
-        showAlert("Note deleted successfully");
+        showAlert("Note deleted successfully", "danger");
     }
     const handleUpdateNote = () => {
         updateNote(note);
-        showAlert("Note Update successfully");
+        showAlert("Note Update successfully", "primary");
     }
     return (
-        <div className="col-md-3">
-            <div className="card my-3" style={{ width: "18rem" }}>
+        <div className=" col-md-3" style={{ width: "25rem" }}>
+            <div className="card">
                 <div className="card-body">
                     <h5 className="card-title">{note.title}</h5>
                     <p className="card-text">{note.description.substring(0, 20)} ...</p>
                 </div>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">{new Date(note.date).toLocaleDateString()}</li>
-
-                    <li className="list-group-item">{new Date(note.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</li>
+                    <li className="list-group-item d-flex justify-content-between">
+                        <span>{new Date(note.date).toLocaleDateString()}</span>
+                        <span>{new Date(note.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </li>
                 </ul>
 
                 {/* // Using icons for delete and edit actions */}
