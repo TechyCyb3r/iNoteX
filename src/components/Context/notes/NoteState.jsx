@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 const NoteState = (props) => {
-    const host = "http://localhost:5000";
+    const host = import.meta.env.VITE_HOST;
     const notesInitial = []
     const [notes, setNotes] = useState(notesInitial)
 
@@ -64,13 +64,13 @@ const NoteState = (props) => {
                 "Content-Type": "application/json",
                 "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
             },
-            body: JSON.stringify({title, description, tag})
+            body: JSON.stringify({title, description, tag, date: new Date().toISOString()})
         });
 
         // const json = response.json();
         const updateNotes = notes.map((note) => {
             if (note._id === id) {
-                return { ...note, title, description, tag };
+                return { ...note, title, description, tag, date: new Date().toISOString() }; 
             }
             return note;
         });

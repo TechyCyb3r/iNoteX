@@ -28,7 +28,8 @@ function Notes(props) {
     };
 
     const handleUpdateNote = () => {
-        editNote(note.id, note.title, note.description, note.tag);
+        const updateDate = new Date().toISOString();
+        editNote(note.id, note.title, note.description, note.tag, updateDate);
         showAlert("Note updated successfully", "success");
         refClose.current.click();
     };
@@ -48,7 +49,6 @@ function Notes(props) {
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
             >
-                Launch demo modal
             </button>
 
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -87,14 +87,12 @@ function Notes(props) {
             </div>
 
             <div className="row my-3">
+                <div className="container mx-3">
+                    {notes.length === 0 && <h5>No notes to display</h5>}
+                </div>
                 {notes.map((note) => {
                     return (
-                        <NoteItem
-                            key={note._id}
-                            note={note}
-                            showAlert={showAlert}
-                            updateNote={updateNote}
-                        />
+                        <NoteItem key={note._id} note={note} showAlert={showAlert} updateNote={updateNote} />
                     );
                 })}
             </div>

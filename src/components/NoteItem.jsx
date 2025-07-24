@@ -26,7 +26,7 @@ const NoteItem = (props) => {
             <div className="card">
                 <div className="card-body">
                     <h5 className="card-title">{note.title}</h5>
-                    <p className="card-text">{note.description.substring(0, 20)} ...</p>
+                    <p className="card-text">{note.description}</p>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between">

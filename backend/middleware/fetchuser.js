@@ -14,6 +14,7 @@ const fetchuser = (req, res, next) => {
         req.user = data.user;  // ✅ MUST set req.user here
         next();
     } catch (error) {
+        console.error("JWT verification failed:", error.message);
         res.status(401).send({ error: "Invalid token" });
     }
 };

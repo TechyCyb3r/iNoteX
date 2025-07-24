@@ -6,7 +6,6 @@ import Navbar from './components/Navbar'
 import Home from './components/Home'
 import About from './components/About'
 import Alert from './components/Alert'
-
 function App() {
   const [alertMessage, setAlertMessage] = useState(null);
   const showAlert = (msg, type) => {
@@ -23,15 +22,18 @@ function App() {
     <>
       <NoteState>
         <BrowserRouter>
+
           <Navbar />
-           <Alert message={alertMessage?.msg} type={alertMessage?.type} />
+          <div className="times-new-roman-text">
+            <Alert message={alertMessage?.msg} type={alertMessage?.type} />
 
-          <div className="container">
-            <Routes>
-              <Route path='/' element={<Home showAlert={showAlert} />} />
+            <div className="container">
+              <Routes>
+                <Route path='/' element={<Home showAlert={showAlert} />} />
 
-              <Route path='/about' element={<About />} />
-            </Routes>
+                <Route path='/about' element={<About />} />
+              </Routes>
+            </div>
           </div>
 
         </BrowserRouter>

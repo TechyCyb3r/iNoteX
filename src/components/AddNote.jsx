@@ -48,7 +48,6 @@ const AddNote = (props) => {
                 <button type="submit" className="btn btn-primary" onClick={handleClick}>Add Note</button>
             </form>
             <h1>Your notes</h1>
-            {/* <Notes /> */}
         </div>
     )
 }
