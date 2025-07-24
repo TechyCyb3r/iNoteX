@@ -68,7 +68,10 @@ function Notes(props) {
 
                                 <div className="mb-3">
                                     <label className="form-label">Description</label>
-                                    <input type="text" className="form-control" id="edescription" name="description" value={note.description} onChange={onChange} />
+
+                                     <textarea class="form-control"  id="edescription" name="description" onChange={onChange} value={note.description} ></textarea>
+
+                                    {/* <input type="text" className="form-control" id="edescription" name="description" value={note.description} onChange={onChange} /> */}
                                 </div>
 
                                 <div className="mb-3">
