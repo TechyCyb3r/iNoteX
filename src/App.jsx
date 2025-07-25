@@ -6,6 +6,8 @@ import Navbar from './components/Navbar'
 import Home from './components/Home'
 import About from './components/About'
 import Alert from './components/Alert'
+import BackGround from './components/Background'
+
 function App() {
   const [alertMessage, setAlertMessage] = useState(null);
   const showAlert = (msg, type) => {
@@ -13,26 +15,28 @@ function App() {
 
     setTimeout(() => {
       setAlertMessage(null);
-    }, 3000);
+    }, 4000);
   };
-
-
 
   return (
     <>
       <NoteState>
         <BrowserRouter>
 
+          <BackGround id="tsparticles" />
+          <div style={{ position: 'relative' }}>
           <Navbar />
+
+          {/* Alert component to show messages */}
           <div className="times-new-roman-text">
             <Alert message={alertMessage?.msg} type={alertMessage?.type} />
 
             <div className="container">
               <Routes>
                 <Route path='/' element={<Home showAlert={showAlert} />} />
-
                 <Route path='/about' element={<About />} />
               </Routes>
+              </div>
             </div>
           </div>
 

@@ -90,7 +90,7 @@ function Notes(props) {
             </div>
 
             <div className="row my-3">
-                <div className="container mx-3">
+                <div className="container mx-4" style={{color: 'white'}}>
                     {notes.length === 0 && <h5>No notes to display</h5>}
                 </div>
                 {notes.map((note) => {

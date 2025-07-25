@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react'
 import noteContext from './Context/notes/NoteContext';
+import { TextField, Button, Box, Paper, Typography } from '@mui/material';
+
 
 
 const AddNote = (props) => {
@@ -20,7 +22,7 @@ const AddNote = (props) => {
 
         addNote(fTitle, fDescription, fTag);
         props.showAlert("Note added successfully", "success");
-        
+
         setNote({ title: "", description: "", tag: "" });
     };
 
@@ -29,26 +31,28 @@ const AddNote = (props) => {
     }
 
     return (
-        <div className="container my-3">
-            <h2>Add a note</h2>
-            <form className="my-3">
-                <div className="mb-3">
-                    <label className="form-label">Title</label>
-                    <input type="text" className="form-control" value={note.title} id="title" name="title" onChange={onChange} />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Description</label>
-                     <textarea className="form-control"  id="edescription" name="description" onChange={onChange} value={note.description} ></textarea>
-                    {/* <input type="text" className="form-control" value={note.description} id="description" name="description" onChange={onChange} /> */}
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Tag</label>
-                    <input type="text" className="form-control" value={note.tag} id="tag" name="tag" placeholder="Optional to add by defalut it set as default" onChange={onChange} />
-                </div>
-                <button type="submit" className="btn btn-primary" onClick={handleClick}>Add Note</button>
-            </form>
-            <h1>Your notes</h1>
-        </div>
+        <>
+
+            <Paper elevation={4} sx={{ p: 3, maxWidth: 600, mx: 2, mt: 5 }}>
+                <Typography variant="h5" gutterBottom>
+                    📝 Add a New Note
+                </Typography>
+                <Box component="form" noValidate autoComplete="off">
+                    <TextField fullWidth label="Title" variant="outlined" margin="normal" name="title" value={note.title} id="title" onChange={onChange} />
+
+                    <TextField fullWidth label="Description" multiline rows={4}
+                        variant="outlined" margin="normal" id="edescription" name="description" onChange={onChange} value={note.description} />
+
+                    <TextField
+                        fullWidth label="Tag (optional)" variant="outlined" margin="normal" value={note.tag} id="tag" name="tag" onChange={onChange} />
+
+                    <Button variant="contained" color="primary" sx={{ mt: 2 }} fullWidth onClick={handleClick}>Add Note</Button>
+                </Box>
+            </Paper>
+            <Typography variant='h4' sx={{mx: 2, mt: 2,}} color="white">
+                Your Notes: -
+            </Typography>
+        </>
     )
 }
 
