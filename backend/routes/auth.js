@@ -17,18 +17,18 @@ router.post('/signup', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password must be atleast 8 characters').isLength({ min: 8 }),
 ], async (req, res) => {
-
+    let success = false;
     // If there are erros, return Bad request and the error.
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({success, errors: errors.array() });
     }
 
     // Check whether the user with email already.
     try {
         let user = await User.findOne({ email: req.body.email });
         if (user) {
-            return res.status(400).json({ error: "Sorry a user with this email already exists" })
+            return res.status(400).json({ success, error: "Sorry a user with this email already exists" })
         }
 
         // create hash password
@@ -50,14 +50,14 @@ router.post('/signup', [
 
         const authToken = jwt.sign(data, JWT_SECRET);
         console.log(authToken);
-
+        success = true;
         // Send message of user creation
         // res.json({ success: true, message: "User created successfully" })
-        res.json({ authToken })
+        res.json({success, authToken })
 
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send(success, "Internal Server Error");
     }
 
     // .then(user => res.json(user)).catch(err => console.log(err));
