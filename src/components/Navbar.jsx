@@ -5,7 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import NoteIcon from '@mui/icons-material/Note';
 
-const pages = ['Home', 'About'];
+const pages = ['Home', 'About', 'Login', 'Signup'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Navbar = () => {
