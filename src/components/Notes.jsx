@@ -28,6 +28,10 @@ function Notes(props) {
     };
 
     const handleUpdateNote = () => {
+        if (note.title.length < 5 || note.description.length < 5) {
+            showAlert("Title and description must be at least 5 characters long", "danger");
+            return;
+        }
         const updateDate = new Date().toISOString();
         editNote(note.id, note.title, note.description, note.tag, updateDate);
         showAlert("Note updated successfully", "success");
@@ -69,7 +73,7 @@ function Notes(props) {
                                 <div className="mb-3">
                                     <label className="form-label">Description</label>
 
-                                     <textarea className="form-control"  id="edescription" name="description" onChange={onChange} value={note.description} ></textarea>
+                                    <textarea className="form-control" id="edescription" name="description" onChange={onChange} value={note.description}></textarea>
 
                                     {/* <input type="text" className="form-control" id="edescription" name="description" value={note.description} onChange={onChange} /> */}
                                 </div>
@@ -83,14 +87,15 @@ function Notes(props) {
 
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" ref={refClose}>Close</button>
-                            <button type="button" className="btn btn-primary" onClick={handleUpdateNote}>Update Note</button> 
+                            <button type="button" className="btn btn-primary" onClick={handleUpdateNote} > Update Note
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className="row my-3">
-                <div className="container mx-4" style={{color: 'white'}}>
+                <div className="container mx-4" style={{ color: 'white' }}>
                     {notes.length === 0 && <h5>No notes to display</h5>}
                 </div>
                 {notes.map((note) => {

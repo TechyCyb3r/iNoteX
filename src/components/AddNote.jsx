@@ -20,6 +20,16 @@ const AddNote = (props) => {
         const fTag = note.tag.trim() || "default";
         const fDescription = note.description.trim();
 
+
+        if (fDescription.length < 5) {
+            return props.showAlert("Description must be at least 5 characters long", "danger");
+        }
+        if (fTitle.length < 5) {
+            return props.showAlert("Title must be at least 5 characters long", "danger");
+        }else if(!fTitle){
+            note.title="Undefined";
+        }
+
         addNote(fTitle, fDescription, fTag);
         props.showAlert("Note added successfully", "success");
 
@@ -38,10 +48,10 @@ const AddNote = (props) => {
                     📝 Add a New Note
                 </Typography>
                 <Box component="form" noValidate autoComplete="off">
-                    <TextField fullWidth label="Title" variant="outlined" margin="normal" name="title" value={note.title} id="title" onChange={onChange} />
+                    <TextField fullWidth label="Title" variant="outlined" margin="normal" name="title" value={note.title} id="title" onChange={onChange} minLength={5} />
 
                     <TextField fullWidth label="Description" multiline rows={4}
-                        variant="outlined" margin="normal" id="edescription" name="description" onChange={onChange} value={note.description} />
+                        variant="outlined" margin="normal" id="edescription" name="description" onChange={onChange} value={note.description} minLength={5} required />
 
                     <TextField
                         fullWidth label="Tag (optional)" variant="outlined" margin="normal" value={note.tag} id="tag" name="tag" onChange={onChange} />
@@ -49,7 +59,7 @@ const AddNote = (props) => {
                     <Button variant="contained" color="primary" sx={{ mt: 2 }} fullWidth onClick={handleClick}>Add Note</Button>
                 </Box>
             </Paper>
-            <Typography variant='h4' sx={{mx: 2, mt: 2,}} color="white">
+            <Typography variant='h4' sx={{ mx: 2, mt: 2, }} color="white">
                 Your Notes: -
             </Typography>
         </>

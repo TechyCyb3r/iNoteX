@@ -32,8 +32,17 @@ const NoteItem = (props) => {
     };
 
     const handleUpdateNote = () => {
-        updateNote(note);
+       
+        if (note.description.length < 5) {
+            return props.showAlert("Description must be at least 5 characters long", "danger");
+        }
+        if (note.title.length < 5) {
+            return props.showAlert("Title must be at least 5 characters long", "danger");
+        }else if(!note.title){
+            note.title="Undefined";
+        }
         showAlert('Note updated successfully', 'primary');
+        updateNote(note);
     };
 
     const card = (
@@ -51,7 +60,12 @@ const NoteItem = (props) => {
                     {note.title}
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>
-                    <span className="badge text-bg-success">{note.tag}</span>
+                    {Array.isArray(note.tag)
+                        ? note.tag.map((t, idx) => (
+                            <span key={idx} className="badge text-bg-success mx-1">{t}</span>
+                        ))
+                        : <span className="badge text-bg-success">{note.tag}</span>
+                    }
                 </Typography>
                 <Typography variant="body2">{note.description}</Typography>
             </CardContent>
