@@ -27,7 +27,7 @@ const Signup = () => {
         if (json.success) {
             // redirect to dashboard
             localStorage.setItem("token", json.token);
-            history("/");
+            history("/login");
         }
         else {
             alert("Invalid credentials");
@@ -65,4 +65,4 @@ const Signup = () => {
         </div>
     )
 }
-export default Signup
+export default Signup;

@@ -5,8 +5,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import NoteIcon from '@mui/icons-material/Note';
 
-const pages = ['Home', 'About', 'Login', 'Signup'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const isLogin = localStorage.getItem("token");
+const pages = isLogin ? ['Home', 'About'] : ['Home', 'About', 'Login'];
+const settings = ['Profile', 'Account', 'Logout'];
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -32,31 +33,6 @@ const Navbar = () => {
     // }
     return (
         <>
-            {/* <nav className="navbar navbar-expand-lg bg-dark " data-bs-theme="dark">
-                <div className="container-fluid">
-                    <Link className="navbar-brand">My-Notebook</Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <Link className={`nav-link ${isActive('/')}`} aria-current="page" to="/">Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={`nav-link ${isActive('/about')}`} aria-current="page" to="/about">About</Link>
-                            </li>
-                        </ul>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form> 
-                    </div>
-                </div>
-            </nav> 
-            */}
-
-
             <AppBar position="static" sx={{ backgroundColor: '#050A30' }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -95,7 +71,19 @@ const Navbar = () => {
 
                             <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorElUser} anchorOrigin={{ vertical: 'top', horizontal: 'right', }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right', }} open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
                                 {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu} >
+                                    <MenuItem key={setting} onClick={() => {
+                                        handleCloseUserMenu();
+                                        if(setting === 'Profile'){
+                                            window.location.href = '/profile';
+                                        }
+                                        if (setting === 'Logout') {
+                                            localStorage.removeItem('token');
+                                            window.location.href = '/login';
+                                        }
+                                         if(setting === 'Account'){
+                                            window.location.href = '/account';
+                                        }
+                                    }} >
                                         <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                                     </MenuItem>
                                 ))}

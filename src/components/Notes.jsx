@@ -25,7 +25,7 @@ function Notes(props) {
             showAlert("Please login to view your notes", "danger");
             navigate("/login");
         }
-    });
+    },[]);
 
     const updateNote = (currentNote) => {
         setNote({

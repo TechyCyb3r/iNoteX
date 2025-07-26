@@ -1,52 +1,55 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Signup from './Signup'
+import { Button as Btn } from '@mui/material';
 
 
 const Login = () => {
-const [credentials, setCredentials] = useState({email: "", password: ""});
-let navigate = useNavigate();
+    const [credentials, setCredentials] = useState({ email: "", password: "" });
+    let navigate = useNavigate();
 
-const handleLogin = async (e) => {
-    e.preventDefault();
-    const response = await fetch(`${import.meta.env.VITE_LOGIN}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-
-        },
-        body: JSON.stringify({ email: credentials.email, password: credentials.password })
-    });
-
-    const json = await response.json();
-    console.log(json);
-
-    if(json.success){
-        // redirect to dashboard
-        localStorage.setItem("token", json.authToken);
-
-        // Fetch loged in user data: -
-        const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
-            method: 'GET',
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const response = await fetch(`${import.meta.env.VITE_LOGIN}`, {
+            method: 'POST',
             headers: {
-                'content-type': 'application/json',
-                'auth-token': json.authToken,
+                'Content-Type': 'application/json',
+
             },
+            body: JSON.stringify({ email: credentials.email, password: credentials.password })
         });
-        const userData = await userRes.json();
-        console.log("Logged in user data:", userData);
-        navigate("/");
-    }
-    else{
-        alert("Invalid credentials");
+
+        const json = await response.json();
+        console.log(json);
+
+        if (json.success) {
+            // redirect to dashboard
+            localStorage.setItem("token", json.authToken);
+
+            // Fetch loged in user data: -
+            const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    'auth-token': json.authToken,
+                },
+            });
+            const userData = await userRes.json();
+            console.log("Logged in user data:", userData);
+            navigate("/");
+        }
+        else {
+            alert("Invalid credentials");
+        }
+        console.log("authToken:", json.authToken);
+
     }
 
-}
-
-const onChange = (e) => {
-   setCredentials({...credentials, [e.target.name]: e.target.value});
-};
+    const onChange = (e) => {
+        setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    };
 
 
     return (
@@ -69,6 +72,12 @@ const onChange = (e) => {
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>If you don't have an account, create account: </Form.Label>
+                    <Btn component={Link} to="/signup" style={{ textDecoration: 'underline', color:'cyan', border: 'none'}} variant="text">
+                        Sign-Up
+                    </Btn>
+                </Form.Group>
             </Form>
         </div>
     )

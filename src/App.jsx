@@ -9,6 +9,8 @@ import Alert from './components/Alert'
 import BackGround from './components/Background'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import Profile from './components/Profile'
+import Account from './components/Account'
 
 function App() {
   const [alertMessage, setAlertMessage] = useState(null);
@@ -39,6 +41,8 @@ function App() {
                 <Route path='/about' element={<About />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<Signup />} />
+                <Route path='/profile' element={<Profile/>} />
+                <Route path='/account' element={<Account/>} />
               </Routes>
               </div>
             </div>
