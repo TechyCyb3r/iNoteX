@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from './Context/notes/NoteContext';
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
@@ -25,7 +25,7 @@ function Notes(props) {
             showAlert("Please login to view your notes", "danger");
             navigate("/login");
         }
-    }, []);
+    });
 
     const updateNote = (currentNote) => {
         setNote({
