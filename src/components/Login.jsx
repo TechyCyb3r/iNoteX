@@ -1,87 +1,171 @@
-import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import Signup from './Signup'
-import { Button as Btn } from '@mui/material';
-
+import { Box, Typography, TextField, Button, Snackbar, Alert, IconButton, InputAdornment, Paper } from '@mui/material';
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
-    let navigate = useNavigate();
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const response = await fetch(`${import.meta.env.VITE_LOGIN}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
 
-            },
-            body: JSON.stringify({ email: credentials.email, password: credentials.password })
-        });
+        if (!credentials.email || !credentials.password) {
+            setSnackbar({ open: true, message: 'Please fill all fields', severity: 'warning' });
+            return;
+        }
 
-        const json = await response.json();
-        console.log(json);
-
-        if (json.success) {
-            // redirect to dashboard
-            localStorage.setItem("token", json.authToken);
-
-            // Fetch loged in user data: -
-            const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
-                method: 'GET',
+        try {
+            const response = await fetch(`${import.meta.env.VITE_LOGIN}`, {
+                method: 'POST',
                 headers: {
-                    'content-type': 'application/json',
-                    'auth-token': json.authToken,
+                    'Content-Type': 'application/json',
                 },
+                body: JSON.stringify(credentials)
             });
-            const userData = await userRes.json();
-            console.log("Logged in user data:", userData);
-            navigate("/");
-        }
-        else {
-            alert("Invalid credentials");
-        }
-        console.log("authToken:", json.authToken);
 
-    }
+            const json = await response.json();
+            if (json.success) {
+                localStorage.setItem("token", json.authToken);
+
+                // Fetch user
+                const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
+                    method: 'GET',
+                    headers: {
+                        'content-type': 'application/json',
+                        'auth-token': json.authToken,
+                    },
+                });
+
+                const userData = await userRes.json();
+                console.log("Logged in user data:", userData);
+                setSnackbar({ open: true, message: 'Login successful!', severity: 'success' });
+                setTimeout(() => navigate("/"), 1000);
+            } else {
+                setSnackbar({ open: true, message: 'Invalid credentials', severity: 'error' });
+            }
+        } catch (error) {
+            setSnackbar({ open: true, message: 'Something went wrong', severity: 'error', error: error.message });
+        }
+    };
 
     const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
-
     return (
 
-        <div className="container my-3" style={{ color: "white" }}>
-            <Form onSubmit={handleLogin}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control name="email" type="email" value={credentials.email} placeholder="Enter email" onChange={onChange} />
-                    <Form.Text style={{ color: "white" }}>
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
+        <Paper elevation={10}
+            sx={{
+                p: 4,
+                my: 2,
+                mx: 'auto',
+                maxWidth: 600,
+                width: '90%',
+                borderRadius: 4,
+                backgroundColor: 'rgba(176, 224, 230, 0.1)',
+                backdropFilter: 'blur(12px)',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: '#fff'
+            }}
+        >
+            <Typography variant="h4" gutterBottom align="center">
+                Login <LoginIcon fontSize="large" sx={{ verticalAlign: 'middle', color: '#00e5ff' }} />
+            </Typography>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" name="password" value={credentials.password} placeholder="Password" onChange={onChange} />
-                </Form.Group>
+            <form onSubmit={handleLogin}>
+                <TextField
+                    fullWidth
+                    label="Email"
+                    name="email"
+                    value={credentials.email}
+                    onChange={onChange}
+                    margin="normal"
+                    variant="outlined"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <EmailIcon sx={{ color: '#00e5ff' }} />
+                            </InputAdornment>
+                        )
+                    }}
+                    sx={{ input: { color: 'white' }, label: { color: 'white' } }}
+                />
 
-                <Button variant="primary" type="submit">
+                <TextField
+                    fullWidth
+                    type="password"
+                    label="Password"
+                    name="password"
+                    value={credentials.password}
+                    onChange={onChange}
+                    margin="normal"
+                    variant="outlined"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <LockIcon sx={{ color: '#00e5ff' }} />
+                            </InputAdornment>
+                        )
+                    }}
+                    sx={{ input: { color: 'white' }, label: { color: 'white' } }}
+                />
+
+                <Button
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        mt: 3,
+                        backgroundColor: '#00e5ff',
+                        color: '#000',
+                        fontWeight: 'bold',
+                        '&:hover': {
+                            backgroundColor: '#00bcd4'
+                        }
+                    }}
+                    endIcon={<LoginIcon />}
+                >
                     Login
                 </Button>
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>If you don't have an account, create account: </Form.Label>
-                    <Btn component={Link} to="/signup" style={{ textDecoration: 'underline', color:'cyan', border: 'none'}} variant="text">
-                        Sign-Up
-                    </Btn>
-                </Form.Group>
-            </Form>
-        </div>
-    )
-}
 
+                <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+                    Don't have an account?
+                    <Button
+                        component={Link}
+                        to="/signup"
+                        variant="text"
+                        sx={{ color: '#00e5ff', textTransform: 'none', ml: 1 }}
+                        endIcon={<PersonAddAlt1Icon />}
+                    >
+                        Sign Up
+                    </Button>
+                </Typography>
+            </form>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={4000}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                    variant="filled"
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </Paper>
+
+    );
+};
 
 export default Login;

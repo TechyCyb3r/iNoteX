@@ -4,6 +4,7 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Button, 
 import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import NoteIcon from '@mui/icons-material/Note';
+import Img from '../assets/icons8-user-liquid-glass-32.png'
 
 const isLogin = localStorage.getItem("token");
 const pages = isLogin ? ['Home', 'About'] : ['Home', 'About', 'Login'];
@@ -65,7 +66,7 @@ const Navbar = () => {
 
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt="Remy Sharp" src={Img} />
                                 </IconButton>
                             </Tooltip>
 

@@ -19,7 +19,7 @@ const Background = () => {
       id="tsparticles"
       options={{
         preset: 'links',
-        background: { color: { value: '#010048' } }, // dark navy blue
+        background: { color: { value: '#050A30' } }, // dark navy blue
         fullScreen: { enable: false }, // since we control it via CSS
         particles: {
           color: { value: '#00ffff' },

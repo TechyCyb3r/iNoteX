@@ -67,10 +67,10 @@ function Notes(props) {
 
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
-                    <div className="modal-content">
+                    <div className="modal-content" style={{ padding: '32px', marginTop: '16px', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.07)', backdropFilter: 'blur(12px)', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#fff' }}>
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">Edit Note</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" style={{ filter: 'brightness(0) invert(1)' }}></button>
                         </div>
 
                         <div className="modal-body">
