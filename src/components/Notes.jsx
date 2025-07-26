@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from './Context/notes/NoteContext';
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
+import { useNavigate } from 'react-router-dom';
 
 function Notes(props) {
     const { notes, getNotes, editNote } = useContext(noteContext);
@@ -13,8 +14,17 @@ function Notes(props) {
     const ref = useRef(null);
     const refClose = useRef(null);
 
+    const navigate = useNavigate();
+    // Fetch all notes when the component mounts
     useEffect(() => {
-        getNotes();
+        const token = localStorage.getItem('token');
+        if(token){
+            getNotes();
+        }
+        else{
+            showAlert("Please login to view your notes", "danger");
+            navigate("/login");
+        }
     }, []);
 
     const updateNote = (currentNote) => {

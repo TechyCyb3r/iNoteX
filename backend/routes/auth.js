@@ -48,18 +48,15 @@ router.post('/signup', [
             }
         }
 
-        const authToken = jwt.sign(data, JWT_SECRET);
+        const authToken = jwt.sign(data, JWT_SECRET, {expiresIn: '1h'});
         console.log(authToken);
         success = true;
-        // Send message of user creation
-        // res.json({ success: true, message: "User created successfully" })
+        // Send success:true and token as message of user creation
         res.json({success, authToken })
-
     } catch (error) {
         console.error(error.message);
-        res.status(500).send(success, "Internal Server Error");
+        res.status(500).json(success, "Internal Server Error");
     }
-
     // .then(user => res.json(user)).catch(err => console.log(err));
 });
 
@@ -96,14 +93,14 @@ router.post('/login', [
                 id: user.id
             }
         }
-        const authToken = jwt.sign(data, JWT_SECRET);
+        const authToken = jwt.sign(data, JWT_SECRET, {expiresIn:'1h'});
         success = true;
         res.json({ success, authToken });
 
 
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json("Internal Server Error");
     }
 
 });
@@ -114,10 +111,15 @@ router.get('/getuser', fetchuser, async (req, res) => {
     try {
         const userId = req.user.id;
         const user = await User.findById(userId).select("-password")
-        res.send(user)
+
+        if(!user){
+            return res.status(400).json({success: false, error:"User not found"})
+
+        }
+        res.status(200).json({success: true, user});
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({success: false, error: "Internal Server Error"});
     }
 
 })

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 const [credentials, setCredentials] = useState({email: "", password: ""});
-let history = useNavigate();
+let navigate = useNavigate();
 
 const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,12 +18,25 @@ const handleLogin = async (e) => {
         },
         body: JSON.stringify({ email: credentials.email, password: credentials.password })
     });
+
     const json = await response.json();
     console.log(json);
+
     if(json.success){
         // redirect to dashboard
-        localStorage.setItem("token", json.token);
-        history("/");
+        localStorage.setItem("token", json.authToken);
+
+        // Fetch loged in user data: -
+        const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'auth-token': json.authToken,
+            },
+        });
+        const userData = await userRes.json();
+        console.log("Logged in user data:", userData);
+        navigate("/");
     }
     else{
         alert("Invalid credentials");

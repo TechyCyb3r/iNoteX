@@ -1,3 +1,4 @@
+// import { set } from "mongoose";
 import NoteContext from "./NoteContext";
 import { useState } from 'react';
 
@@ -12,69 +13,99 @@ const NoteState = (props) => {
     const getNotes = async () => {
 
         // Calling API to get all notes
-        const response = await fetch(`${host}/api/notes/fetchallnotes`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
+        try {
+            const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem('token'),
+                },
+            });
+            const json = await response.json();
+            if (response.status === 401) {
+                console.error("Unauthorized access, please login again.");
+                return;
             }
-        });
-        const json = await response.json();
-        setNotes(json);
+            setNotes(json);
+        } catch (error) {
+            console.error("Failed to fetch notes:", error);
+        }
     }
-
     // addNotes all notes
     const addNote = async (title, description, tag) => {
-
-        // Calling API to add a note
-        const response = await fetch(`${host}/api/notes/addnote`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
-            },
-            body: JSON.stringify({title, description, tag})
-        });
-        const json = await response.json();
-        setNotes(notes.concat(json));
-
+        try {
+            // Calling API to add a note
+            const response = await fetch(`${host}/api/notes/addnote`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem('token'),
+                },
+                body: JSON.stringify({ title, description, tag })
+            });
+            const json = await response.json();
+            if (response.ok) {
+                setNotes(notes.concat(json));
+            } else {
+                console.error("Failed to add note:", json);
+            }
+        } catch (error) {
+            console.error("Error adding note:", error);
+        }
     }
 
 
     // Delete a note
     const deleteNote = async (id) => {
         // Calling API to delete a note
-        await fetch(`${host}/api/notes/deletenote/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
+        try {
+            const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem('token'),
+                },
+            });
+            if (response.ok) {
+                const updateNotes = notes.filter((note) => note._id !== id);
+                setNotes(updateNotes);
+            } else {
+                const errorData = await response.json();
+                console.error("Failed to delete note:", errorData);
             }
-        });
-        const updatedNotes = notes.filter((note) => note._id !== id);
-        setNotes(updatedNotes);
+        }
+        catch (error) {
+            console.error("Error deleting note:", error);
+        }
     }
 
     // Edit a note
     const editNote = async (id, title, description, tag) => {
         // API call to update the note
-        await fetch(`${host}/api/notes/updatenote/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg3YjM5MmViZDY1ZjM4ZjI2YmIzNTkwIn0sImlhdCI6MTc1MzE5NDY1M30.seVLTWkrZw0BLWr1AvIO8bY00gQomANgV2Ex3HlN8MA"
-            },
-            body: JSON.stringify({title, description, tag, date: new Date().toISOString()})
-        });
-
-        // const json = response.json();
-        const updateNotes = notes.map((note) => {
-            if (note._id === id) {
-                return { ...note, title, description, tag, date: new Date().toISOString() }; 
+        try {
+            const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "auth-token": localStorage.getItem('token'),
+                },
+                body: JSON.stringify({ title, description, tag, date: new Date().toISOString() })
+            });
+            if (response.ok) {
+                const updateNotes = notes.map((note) => {
+                    if (note._id === id) {
+                        return { ...note, title, description, tag, date: new Date().toISOString() };
+                    }
+                    return note;
+                });
+                setNotes(updateNotes);
+            } else {
+                const errorData = await response.json();
+                console.error("Failed to update note:", errorData);
             }
-            return note;
-        });
-        setNotes(updateNotes);
+        } catch (error) {
+            console.error("Error updating note:", error);
+        }
     }
 
     return (
