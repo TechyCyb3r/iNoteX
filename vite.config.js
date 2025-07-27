@@ -1,14 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    emptyOutDir: true
   },
   server: {
     port: 3000,
     strictPort: true
-  }
-})
+  },
+  // This is important for correct public path in production
+  base: '/'
+});
