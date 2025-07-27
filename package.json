@@ -26,6 +26,7 @@
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.7",
     "concurrently": "^9.2.0",
+    "cors": "^2.8.5",
     "express-validator": "^7.2.1",
     "framer-motion": "^12.23.9",
     "jsonwebtoken": "^9.0.2",
