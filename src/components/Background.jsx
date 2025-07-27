@@ -1,16 +1,20 @@
 // src/components/Background.jsx
 import React, { useEffect, useState } from 'react';
-import Particles, { initParticlesEngine } from '@tsparticles/react';
-import { loadLinksPreset } from '@tsparticles/preset-links';
+import { Particles } from "@tsparticles/react";
+import { tsParticles } from "@tsparticles/engine";
+import { loadLinksPreset } from "@tsparticles/preset-links";
+
 
 const Background = () => {
   const [engineReady, setEngineReady] = useState(false);
 
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadLinksPreset(engine);
-    }).then(() => setEngineReady(true));
-  }, []);
+ useEffect(() => {
+  const init = async () => {
+    await loadLinksPreset(tsParticles);
+    setEngineReady(true);
+  };
+  init();
+}, []);
 
   if (!engineReady) return null;
 

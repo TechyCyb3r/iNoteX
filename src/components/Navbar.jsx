@@ -73,7 +73,7 @@
                                     </IconButton>
                                 </Tooltip>
 
-                                <Menu s sx={{
+                                <Menu sx={{
                                     mt: '45px',
                                     '& .MuiPaper-root': {
                                         p: 2,
