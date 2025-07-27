@@ -27,11 +27,11 @@ const Background = () => {
             enable: true,
             distance: 150,
             opacity: 0.3,
-            width: 1,
+            width: 2,
             color: '#00ffff'
           },
           move: { enable: true, speed: 2.5, outModes: { default: 'bounce' } },
-          number: { value: 100, density: { enable: true, area: 800 } },
+          number: { value: 200, density: { enable: true, area: 800 } },
           opacity: { value: 0.5 },
           size: { value: 2 },
           shape: { type: 'circle' },

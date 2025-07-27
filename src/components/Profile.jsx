@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Box, Card, CardContent, CircularProgress, Typography, Avatar, Stack, Alert, Divider } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import NoteIcon from '@mui/icons-material/NoteAlt';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -8,7 +13,6 @@ const Profile = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         if (!token) {
             window.location.href = '/login';
             return;
@@ -16,10 +20,7 @@ const Profile = () => {
 
         const fetchUserData = async () => {
             try {
-                // --- Fetch user info ---
                 const getUserUrl = import.meta.env.VITE_GETUSER;
-                console.log("GETUSER URL:", getUserUrl);
-
                 const userRes = await fetch(getUserUrl, {
                     method: 'GET',
                     headers: {
@@ -37,10 +38,7 @@ const Profile = () => {
                     throw new Error(userData.error || "User not found");
                 }
 
-                // --- Fetch user notes ---
                 const getNotesUrl = import.meta.env.VITE_GETNOTES;
-                console.log("GETNOTES URL:", getNotesUrl);
-
                 const notesRes = await fetch(getNotesUrl, {
                     method: 'GET',
                     headers: {
@@ -67,17 +65,75 @@ const Profile = () => {
         fetchUserData();
     }, []);
 
-    if (loading) return <p style={{ color: 'white' }}>Loading profile...</p>;
-    if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
-    if (!user) return <p style={{ color: 'white' }}>User not found</p>;
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <CircularProgress color="secondary" />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <Alert severity="error" icon={<ErrorOutlineIcon />}>
+                    {error}
+                </Alert>
+            </Box>
+        );
+    }
+
+    if (!user) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <Alert severity="info">User not found</Alert>
+            </Box>
+        );
+    }
 
     return (
-        <div style={{ color: 'white', padding: '2rem' }}>
-            <h2>User Profile</h2>
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Created Notes:</strong> {noteCount}</p>
-        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6, px: 2 }}>
+            <Card
+                sx={{
+                    maxWidth: 500,
+                    width: '100%',
+                    bgcolor: 'background.paper',
+                    boxShadow: 10,
+                    borderRadius: 4,
+                    backdropFilter: 'blur(12px)',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'white'
+                }}
+            >
+                <CardContent>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                        <Avatar sx={{ bgcolor: '#070a1a', width: 80, height: 80 }}>
+                            <PersonIcon fontSize='large' />
+                        </Avatar>
+                        <Typography variant="h5" sx={{ mt: 2, fontWeight: 'bold' }}>
+                            {user.name}
+                        </Typography>
+                        <Typography variant="body2" color="cyan">
+                            Welcome back 👋
+                        </Typography>
+                    </Box>
+
+                    <Divider sx={{ my: 3 }} />
+
+                    <Stack spacing={2}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <EmailIcon color="primary" />
+                            <Typography variant="body1"><strong>Email:</strong> {user.email}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <NoteIcon color="action" />
+                            <Typography variant="body1"><strong>Created Notes:</strong> {noteCount}</Typography>
+                        </Box>
+                    </Stack>
+                </CardContent>
+            </Card>
+        </Box>
     );
 };
 

@@ -5,6 +5,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import NoteIcon from '@mui/icons-material/Note';
 import Img from '../assets/icons8-user-liquid-glass-32.png'
+import PersonIcon from '@mui/icons-material/Person';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const isLogin = localStorage.getItem("token");
 const pages = isLogin ? ['Home', 'About'] : ['Home', 'About', 'Login'];
@@ -70,24 +73,43 @@ const Navbar = () => {
                                 </IconButton>
                             </Tooltip>
 
-                            <Menu sx={{ mt: '45px' }} id="menu-appbar" anchorEl={anchorElUser} anchorOrigin={{ vertical: 'top', horizontal: 'right', }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right', }} open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={() => {
-                                        handleCloseUserMenu();
-                                        if(setting === 'Profile'){
-                                            window.location.href = '/profile';
-                                        }
-                                        if (setting === 'Logout') {
-                                            localStorage.removeItem('token');
-                                            window.location.href = '/login';
-                                        }
-                                         if(setting === 'Account'){
-                                            window.location.href = '/account';
-                                        }
-                                    }} >
-                                        <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                                    </MenuItem>
-                                ))}
+                            <Menu s sx={{
+                                mt: '45px',
+                                '& .MuiPaper-root': {
+                                    p: 2,
+                                    borderRadius: 4,
+                                    backgroundColor: 'rgba(176, 224, 230, 0.1)',
+                                    backdropFilter: 'blur(12px)',
+                                    boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    color: '#fff',
+                                },
+                            }} id="menu-appbar" anchorEl={anchorElUser} anchorOrigin={{ vertical: 'top', horizontal: 'right', }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right', }} open={Boolean(anchorElUser)} onClose={handleCloseUserMenu}>
+                                {settings.map((setting) => {
+                                    let icon;
+                                    if (setting === 'Profile') icon = <PersonIcon sx={{ mr: 1, color: '#1976d2' }} />;
+                                    if (setting === 'Account') icon = <ManageAccountsIcon sx={{ mr: 1, color: '#1976d2' }} />;
+                                    if (setting === 'Logout') icon = <LogoutIcon sx={{ mr: 1, color: '#d32f2f' }} />;
+
+                                    return (
+                                        <MenuItem
+                                            key={setting}
+                                            onClick={() => {
+                                                handleCloseUserMenu();
+                                                if (setting === 'Profile') window.location.href = '/profile';
+                                                if (setting === 'Account') window.location.href = '/account';
+                                                if (setting === 'Logout') {
+                                                    localStorage.removeItem('token');
+                                                    window.location.href = '/login';
+                                                }
+                                            }}
+                                            sx={{ display: 'flex', alignItems: 'center' }}
+                                        >
+                                            {icon}
+                                            <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                                        </MenuItem>
+                                    );
+                                })}
                             </Menu>
                         </Box>
 
