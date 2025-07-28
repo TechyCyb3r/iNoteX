@@ -1,6 +1,12 @@
 import React from 'react';
-import { Box, Typography, Grid, Paper, Avatar } from '@mui/material';
-import { NoteAlt, Security, CloudUpload, Devices, Person, VerifiedUser } from '@mui/icons-material';
+import { Box, Typography, Grid, Paper, Avatar, Tooltip } from '@mui/material';
+import { NoteAlt, Security, CloudUpload, Devices, Person } from '@mui/icons-material';
+import { VerifiedUser } from '@mui/icons-material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import EmailIcon from '@mui/icons-material/Email';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+
 
 const About = () => {
   return (
@@ -80,6 +86,41 @@ const About = () => {
           </Paper>
         </Grid>
       </Grid>
+      <Box mt={6} pt={4} borderTop="1px solid rgba(255,255,255,0.2)" textAlign="center">
+        <Typography variant="h6" gutterBottom>
+          Connect with Me
+        </Typography>
+
+
+        <Box display="flex" justifyContent="center" gap={3} flexWrap="wrap" mt={1}>
+          <Tooltip title="Follow me on LinkedIn">
+            <Typography component="a" href="https://www.linkedin.com/in/himanshuagarwal04/" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }} >
+              <LinkedInIcon style={{ color: '#fff', }} fontSize="large" />
+            </Typography>
+          </Tooltip>
+
+          <Tooltip title="View my GitHub">
+          <Typography component="a" href="https://github.com/TechyCyb3r" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }} >
+            <GitHubIcon style={{ color: '#fff' }} fontSize='large' />
+          </Typography>
+          </Tooltip>
+
+          <Tooltip title="Email me">
+          <Typography component="a" href="mailto:himanshuagarwalskr@gmail.com" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
+            <EmailIcon style={{ color: '#fff' }} fontSize='large' />
+          </Typography>
+          </Tooltip>
+
+          <Tooltip title="Contact me">
+          <Typography component="a" href="https://docs.google.com/forms/d/e/1FAIpQLSfB-BCduuDYmCWf7WZhzhqViAIt4b90fpZZ_D1V50Slh8HIlw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
+            <ContactPageIcon style={{ color: '#fff' }} fontSize='large' />
+          </Typography>
+          </Tooltip>
+        </Box>
+        <Typography variant="body2" color="gray" mt={2}>
+          © {new Date().getFullYear()} Himanshu Agarwal. All rights reserved.
+        </Typography>
+      </Box>
     </Paper>
   );
 };
