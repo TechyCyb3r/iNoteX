@@ -42,7 +42,7 @@ export default function ParticlesBackground() {
                 outModes: { default: "bounce" },
               },
               number: {
-                value: 200,
+                value: 150,
                 density: { enable: true, area: 800 },
               },
               opacity: { value: 0.5 },
