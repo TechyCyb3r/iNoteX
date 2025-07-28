@@ -117,7 +117,7 @@ const About = () => {
             </Typography>
           </Tooltip>
         </Box>
-        <Typography variant="body2" color="gray" mt={2}>
+        <Typography variant="body2" color="#D3D3D3" mt={2}>
           © {new Date().getFullYear()} Himanshu Agarwal. All rights reserved.
         </Typography>
       </Box>
