@@ -100,21 +100,21 @@ const About = () => {
           </Tooltip>
 
           <Tooltip title="View my GitHub">
-          <Typography component="a" href="https://github.com/TechyCyb3r" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }} >
-            <GitHubIcon style={{ color: '#fff' }} fontSize='large' />
-          </Typography>
+            <Typography component="a" href="https://github.com/TechyCyb3r" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }} >
+              <GitHubIcon style={{ color: '#fff' }} fontSize='large' />
+            </Typography>
           </Tooltip>
 
           <Tooltip title="Email me">
-          <Typography component="a" href="mailto:himanshuagarwalskr@gmail.com" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
-            <EmailIcon style={{ color: '#fff' }} fontSize='large' />
-          </Typography>
+            <Typography component="a" href="mailto:himanshuagarwalskr@gmail.com" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
+              <EmailIcon style={{ color: '#fff' }} fontSize='large' />
+            </Typography>
           </Tooltip>
 
           <Tooltip title="Contact me">
-          <Typography component="a" href="https://docs.google.com/forms/d/e/1FAIpQLSfB-BCduuDYmCWf7WZhzhqViAIt4b90fpZZ_D1V50Slh8HIlw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
-            <ContactPageIcon style={{ color: '#fff' }} fontSize='large' />
-          </Typography>
+            <Typography component="a" href="https://docs.google.com/forms/d/e/1FAIpQLSfB-BCduuDYmCWf7WZhzhqViAIt4b90fpZZ_D1V50Slh8HIlw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" style={{ color: '#00FFFF', textDecoration: 'none' }} >
+              <ContactPageIcon style={{ color: '#fff' }} fontSize='large' />
+            </Typography>
           </Tooltip>
         </Box>
         <Typography variant="body2" color="gray" mt={2}>
