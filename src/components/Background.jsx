@@ -1,8 +1,8 @@
 // ParticlesBackground.jsx
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim"; // Slim = lightest bundle
-import Styles from "../css/ParticlesBackground.module.css"; // Optional: your custom style
+import { loadSlim } from "@tsparticles/slim";
+import Styles from "../css/ParticlesBackground.module.css"; 
 
 export default function ParticlesBackground() {
   const [init, setInit] = useState(false);
@@ -42,7 +42,7 @@ export default function ParticlesBackground() {
                 outModes: { default: "bounce" },
               },
               number: {
-                value: 150,
+                value: 200,
                 density: { enable: true, area: 800 },
               },
               opacity: { value: 0.5 },
