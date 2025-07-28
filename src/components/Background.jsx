@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import Styles from "../css/Background.module.css";
+import Styles from "../Css/Background.module.css";
 
 export default function ParticlesBackground() {
   const [init, setInit] = useState(false);
