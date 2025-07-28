@@ -3,6 +3,7 @@ import noteContext from './Context/notes/NoteContext';
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
 import { useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 function Notes(props) {
     const { notes, getNotes, editNote } = useContext(noteContext);
@@ -53,7 +54,7 @@ function Notes(props) {
     };
 
     return (
-        <>
+        <Box sx={{ mxx: "auto", maxWidth: 1200, width: '100%' }}>
             <AddNote showAlert={showAlert} />
 
             <button
@@ -114,7 +115,7 @@ function Notes(props) {
                     );
                 })}
             </div>
-        </>
+        </Box>
     );
 }
 
