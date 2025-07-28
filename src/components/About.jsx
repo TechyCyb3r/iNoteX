@@ -99,7 +99,7 @@ const About = () => {
             </Typography>
           </Tooltip>
 
-          <Tooltip title="View my GitHub">
+          <Tooltip title="View my GitHub" sx={{ color: '#fff' }}>
             <Typography component="a" href="https://github.com/TechyCyb3r" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'none' }} >
               <GitHubIcon style={{ color: '#fff' }} fontSize='large' />
             </Typography>
