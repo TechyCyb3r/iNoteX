@@ -27,6 +27,7 @@
     "bootstrap": "^5.3.7",
     "concurrently": "^9.2.0",
     "cors": "^2.8.5",
+    "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "framer-motion": "^12.23.9",
     "jsonwebtoken": "^9.0.2",
@@ -36,6 +37,7 @@
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.0",
     "rsuite": "^5.83.2",
+    "serverless-http": "^3.2.0",
     "three": "^0.178.0",
     "tsparticles": "^3.8.1",
     "vanta": "^0.5.24"
