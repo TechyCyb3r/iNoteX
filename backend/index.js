@@ -1,28 +1,18 @@
-require('dotenv').config();
-const connectToMongo = require('./db');
+// api/index.js
 const express = require('express');
-const cors = require('cors');
+const serverless = require('serverless-http');
+require('dotenv').config();
+const connectToMongo = require('../backend/db'); // adjust if needed
 
-// MongoDB connection
-connectToMongo();
-
-// Create app
 const app = express();
-
-// CORS Setup
-app.use(cors({
-  origin: '*', // Or use your frontend domain for more security
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Middleware
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/notes', require('./routes/notes'));
+// Connect to Mongo
+connectToMongo();
 
-// ✅ DON'T use app.listen()
-// Instead, export the app for Vercel
-module.exports = app;
+// Sample route
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello from Express on Vercel!' });
+});
+
+module.exports.handler = serverless(app);
