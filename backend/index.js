@@ -9,7 +9,7 @@ connectToMongo();
 // Create app
 const app = express();
 
-// ✅ CORS Setup
+// CORS Setup
 app.use(cors({
   origin: '*', // Or use your frontend domain for more security
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
