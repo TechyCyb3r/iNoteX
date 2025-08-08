@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "public": "dist",
   "builds": [
     {
       "src": "dist/**",
@@ -14,8 +15,5 @@
       "src": "/.*",
       "dest": "/index.html"
     }
-  ],
-  "static": {
-    "public": "dist"
-  }
+  ]
 }
