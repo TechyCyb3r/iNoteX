@@ -1,18 +1,16 @@
-// api/index.js
 const express = require('express');
-const serverless = require('serverless-http');
-require('dotenv').config();
-const connectToMongo = require('../backend/db'); // adjust if needed
-
+const path = require('path');
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-// Connect to Mongo
-connectToMongo();
+// Serve static files
+app.use(express.static(path.join(__dirname, '../public')));
 
-// Sample route
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Express on Vercel!' });
+// Route for "/"
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-module.exports.handler = serverless(app);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
