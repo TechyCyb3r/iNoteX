@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Box, Typography, TextField, Button, Snackbar, Alert, IconButton, InputAdornment, Paper } from '@mui/material';
+import { Typography, TextField, Button, Snackbar, Alert, InputAdornment, Paper } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import { API } from '../config/apiconfig';  
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -20,36 +21,40 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_LOGIN}`, {
+            console.log("📡 Sending request to:", API.LOGIN);
+
+            const response = await fetch(API.LOGIN, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(credentials)
             });
 
             const json = await response.json();
+            console.log("🧾 Response:", json);
+
             if (json.success) {
                 localStorage.setItem("token", json.authToken);
 
-                // Fetch user
-                const userRes = await fetch(`${import.meta.env.VITE_GETUSER}`, {
+                // Fetch user details
+                const userRes = await fetch(API.GET_USER, {
                     method: 'GET',
                     headers: {
-                        'content-type': 'application/json',
+                        'Content-Type': 'application/json',
                         'auth-token': json.authToken,
                     },
                 });
 
                 const userData = await userRes.json();
-                console.log("Logged in user data:", userData);
+                console.log("👤 Logged in user:", userData);
+
                 setSnackbar({ open: true, message: 'Login successful!', severity: 'success' });
                 setTimeout(() => navigate("/"), 1000);
             } else {
-                setSnackbar({ open: true, message: 'Invalid credentials', severity: 'error' });
+                setSnackbar({ open: true, message: json.error || 'Invalid credentials', severity: 'error' });
             }
         } catch (error) {
-            setSnackbar({ open: true, message: 'Something went wrong', severity: 'error', error: error.message });
+            console.error("❌ Login error:", error);
+            setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' });
         }
     };
 
@@ -58,8 +63,8 @@ const Login = () => {
     };
 
     return (
-
-        <Paper elevation={10}
+        <Paper
+            elevation={10}
             sx={{
                 p: 4,
                 my: 2,
@@ -125,9 +130,7 @@ const Login = () => {
                         backgroundColor: '#00e5ff',
                         color: '#000',
                         fontWeight: 'bold',
-                        '&:hover': {
-                            backgroundColor: '#00bcd4'
-                        }
+                        '&:hover': { backgroundColor: '#00bcd4' }
                     }}
                     endIcon={<LoginIcon />}
                 >
@@ -164,7 +167,6 @@ const Login = () => {
                 </Alert>
             </Snackbar>
         </Paper>
-
     );
 };
 
