@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  Typography, TextField, Button, Snackbar, Alert,
-  InputAdornment, Paper
+  Typography, TextField, Button, Snackbar, Alert, InputAdornment, Paper
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
@@ -18,7 +17,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     const { email, password } = credentials;
 
     if (!email || !password) {
@@ -27,7 +25,8 @@ const Login = () => {
     }
 
     try {
-      console.log("📤 Sending login payload:", { email, password });
+      console.log("📡 Sending login payload:", { email, password });
+      console.log("🌐 API endpoint:", import.meta.env.VITE_LOGIN);
 
       const response = await fetch(import.meta.env.VITE_LOGIN, {
         method: 'POST',
@@ -36,7 +35,7 @@ const Login = () => {
       });
 
       const text = await response.text();
-      console.log("Login raw response:", text);
+      console.log("📦 Login raw response:", text);
 
       let json;
       try {
@@ -48,17 +47,17 @@ const Login = () => {
       if (json.success) {
         localStorage.setItem("token", json.authToken);
 
-        // ✅ Fetch user info after successful login
+        // ✅ Fetch user details
         const userRes = await fetch(import.meta.env.VITE_GETUSER, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'auth-token': json.authToken
-          }
+            'auth-token': json.authToken,
+          },
         });
 
         const userData = await userRes.json();
-        console.log("👤 Logged-in user data:", userData);
+        console.log("👤 Logged-in user:", userData);
 
         setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
         setTimeout(() => navigate("/"), 2000);
@@ -74,7 +73,7 @@ const Login = () => {
       console.error("❌ Error during login:", error);
       setSnackbar({
         open: true,
-        message: 'Network error. Please check your connection.',
+        message: 'Network or server error. Please try again later.',
         severity: 'error'
       });
     }
