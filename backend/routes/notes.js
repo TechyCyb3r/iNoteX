@@ -23,19 +23,19 @@ router.post('/addnote', fetchuser, [
     // body('title', 'Enter a valid title').isLength({ min: 3 }),
     // body('description', 'Description must be atleast 5 characters').isLength({ min: 5 }),
 
-    // without check
-    body('title', 'Enter a valid title'),
-    body('description', 'Description must be atleast 5 characters'),
 ], async (req, res) => {
 
     try {
         const { title, description, tag } = req.body;
+        if (!title && !description) {
+            return res.status(400).json({ error: "Please enter a title or description." });
+        }
 
         // If there are errors, return Bad request and the errors
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) {
+        //     return res.status(400).json({ errors: errors.array() });
+        // }
 
         const note = new Note({
             title, description, tag, user: req.user.id
@@ -51,7 +51,7 @@ router.post('/addnote', fetchuser, [
 
 // Route 3: Update an existing Note using POST "/api/auth/updatenote"
 router.put('/updatenote/:id', fetchuser, async (req, res) => {
-    const { title, description, tag, date} = req.body;
+    const { title, description, tag, date } = req.body;
     // Create a newnote object 
     const newNote = {};
 
@@ -59,7 +59,7 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
     if (description) { newNote.description = description };
     if (tag) { newNote.tag = tag };
     newNote.date = date;
-    
+
     try {
         // Find the note to be updated and update it
         let note = await Note.findById(req.params.id);
