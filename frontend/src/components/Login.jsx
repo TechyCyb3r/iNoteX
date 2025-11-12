@@ -9,6 +9,10 @@ import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 const Login = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const loginURL = `${BASE_URL}/api/auth/login`;
+  const getUserURL = `${BASE_URL}/api/auth/getuser`;
+
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const navigate = useNavigate();
@@ -26,9 +30,9 @@ const Login = () => {
 
     try {
       console.log("📡 Sending login payload:", { email, password });
-      console.log("🌐 API endpoint:", import.meta.env.VITE_LOGIN);
+      console.log("🌐 API endpoint:", loginURL);
 
-      const response = await fetch(import.meta.env.VITE_LOGIN, {
+      const response = await fetch(loginURL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), password }),
@@ -48,7 +52,7 @@ const Login = () => {
         localStorage.setItem("token", json.authToken);
 
         // ✅ Fetch user details
-        const userRes = await fetch(import.meta.env.VITE_GETUSER, {
+        const userRes = await fetch(getUserURL, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
