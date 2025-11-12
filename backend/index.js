@@ -1,18 +1,25 @@
-// api/index.js
-const express = require('express');
-const serverless = require('serverless-http');
 require('dotenv').config();
-const connectToMongo = require('../backend/db'); // adjust if needed
+const connectToMongo = require('./db');
+const express = require('express')
+var cors = require('cors')
 
+connectToMongo();
 const app = express();
+const port = process.env.PORT;
+
+app.use(cors())
+app.use(express.json())
+
+// connect mongo on port 5000
+
+// Middleware to parse JSON
 app.use(express.json());
 
-// Connect to Mongo
-connectToMongo();
+// Available routes: -
+app.use('/api/auth/', require('./routes/auth'))
+app.use('/api/notes', require('./routes/notes'))
 
-// Sample route
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Express on Vercel!' });
-});
+app.listen(port, () => {
+  console.log(`iNotebook backent listning at http://localhost:${port}`)
+})
 
-module.exports.handler = serverless(app);
