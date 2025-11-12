@@ -22,26 +22,20 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 
 router.post('/addnote', fetchuser, async (req, res) => {
   try {
-    console.log("📩 Received Note Data:", req.body);  // 👈 Add this line
-
     const { title, description, tag } = req.body;
 
     if (!title && !description) {
-      return res.status(400).json({ error: "Please enter a title or description." });
+      return res.status(400).json({ success: false, error: "Please enter a title or description." });
     }
 
-    const note = new Note({
-      title, description, tag, user: req.user.id
-    });
-
+    const note = new Note({ title, description, tag, user: req.user.id });
     const savedNote = await note.save();
-    res.json(savedNote);
+    res.json({ success: true, note: savedNote });
   } catch (error) {
-    console.error("❌ Error in /addnote:", error.message);
-    res.status(500).send("Internal Server Error");
+    console.error("Add note error:", error.message);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
-
 
 // Route 3: Update an existing Note using POST "/api/auth/updatenote"
 router.put('/updatenote/:id', fetchuser, async (req, res) => {
