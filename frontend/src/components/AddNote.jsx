@@ -36,14 +36,14 @@ const AddNote = ({ showAlert }) => {
     const trimmedTag = note.tag.trim() || 'default';
 
     // --- Validation ---
-    if (!trimmedDescription)
-      return showError('✏️ Description cannot be empty', 'warning');
+    // if (!trimmedDescription)
+    //   return showError('✏️ Description cannot be empty', 'warning');
 
-    if (trimmedDescription.length < 5)
-      return showError('📝 Description must be at least 5 characters', 'error');
+    // if (trimmedDescription.length < 5)
+    //   return showError('📝 Description must be at least 5 characters', 'error');
 
-    if (!trimmedTitle || trimmedTitle.length < 5)
-      return showError('📌 Title must be at least 5 characters', 'error');
+    // if (!trimmedTitle || trimmedTitle.length < 5)
+    //   return showError('📌 Title must be at least 5 characters', 'error');
 
     try {
       await addNote(trimmedTitle, trimmedDescription, trimmedTag);
