@@ -30,13 +30,22 @@ const Signup = () => {
       setSnackbar({ open: true, message: 'Please fill all fields.', severity: 'warning' });
       return;
     }
+      console.log("📤 Sending signup payload:", { name, email, password });
 
     try {
       const response = await fetch(signupURL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          password
+        }),
       });
+
 
       const text = await response.text(); // Read raw response (for debugging)
       console.log("Signup raw response:", text);
