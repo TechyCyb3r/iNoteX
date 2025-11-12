@@ -9,12 +9,13 @@ const app = express();
 
 app.use(cors({
   origin: [
-    "https://inote-x-git-main-himanshus-projects-87fce76b.vercel.app", // frontend domain
-    "http://localhost:5173"
+    "http://localhost:5173",
+    /\.vercel\.app$/,
+    /\.thehimanshu\.tech$/
   ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
 }));
-app.use(express.json());
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
