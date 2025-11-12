@@ -41,6 +41,11 @@ function Notes({ showAlert }) {
     //   return;
     // }
 
+    if (!note.title && !note.description) {
+      showAlert("Please enter something before updating", "warning");
+      return;
+    }
+
     try {
       await editNote(note.id, note.title, note.description, note.tag);
       showAlert('✅ Note updated successfully', 'success');
