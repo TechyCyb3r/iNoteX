@@ -18,37 +18,29 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 
 
 // Route 2: Add a new node using POST "/api/auth/addnote "
-router.post('/addnote', fetchuser,
-    //     , [
-    // using check
-    // body('title', 'Enter a valid title').isLength({ min: 3 }),
-    // body('description', 'Description must be atleast 5 characters').isLength({ min: 5 }),
+// 
 
-    // ],
-    async (req, res) => {
+router.post('/addnote', fetchuser, async (req, res) => {
+  try {
+    console.log("📩 Received Note Data:", req.body);  // 👈 Add this line
 
-        try {
-            const { title, description, tag } = req.body;
-            if (!title && !description) {
-                return res.status(400).json({ error: "Please enter a title or description." });
-            }
+    const { title, description, tag } = req.body;
 
-            // If there are errors, return Bad request and the errors
-            // const errors = validationResult(req);
-            // if (!errors.isEmpty()) {
-            //     return res.status(400).json({ errors: errors.array() });
-            // }
+    if (!title && !description) {
+      return res.status(400).json({ error: "Please enter a title or description." });
+    }
 
-            const note = new Note({
-                title, description, tag, user: req.user.id
-            })
-            const savedNote = await note.save()
-            res.json(savedNote);
-        } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Internal Serrver Error");
-        }
-    })
+    const note = new Note({
+      title, description, tag, user: req.user.id
+    });
+
+    const savedNote = await note.save();
+    res.json(savedNote);
+  } catch (error) {
+    console.error("❌ Error in /addnote:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 // Route 3: Update an existing Note using POST "/api/auth/updatenote"
