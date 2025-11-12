@@ -178,7 +178,7 @@ const AddNote = ({ showAlert }) => {
           fontWeight: 600,
         }}
       >
-        🗂️ Your Notes: -
+        🗂️ Your Notes
       </Typography>
     </>
   );
