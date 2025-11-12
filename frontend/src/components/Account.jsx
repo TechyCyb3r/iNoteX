@@ -191,7 +191,7 @@ const Account = () => {
 
     setSubmitting(true);
     try {
-      const res = await fetch(API.ACC_DELETE, {
+      const res = await fetch(API.DELETE_ACCOUNT, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
