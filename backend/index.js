@@ -11,7 +11,8 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     /\.vercel\.app$/,
-    /\.thehimanshu\.tech$/
+    /\.thehimanshu\.tech$/,
+    "https://inotex.thehimanshu.tech"
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
