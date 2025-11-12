@@ -8,11 +8,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { API } from '../config/apiconfig'; // ✅ Import centralized API config
 
 const Signup = () => {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const signupURL = `${BASE_URL}/api/auth/signup`;
-
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "" });
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const navigate = useNavigate();
@@ -30,10 +28,12 @@ const Signup = () => {
       setSnackbar({ open: true, message: 'Please fill all fields.', severity: 'warning' });
       return;
     }
-      console.log("📤 Sending signup payload:", { name, email, password });
+
+    console.log("📤 Sending signup payload:", { name, email, password });
+    console.log("🌐 API endpoint:", API.SIGNUP);
 
     try {
-      const response = await fetch(signupURL, {
+      const response = await fetch(API.SIGNUP, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,9 +46,8 @@ const Signup = () => {
         }),
       });
 
-
       const text = await response.text(); // Read raw response (for debugging)
-      console.log("Signup raw response:", text);
+      console.log("📦 Signup raw response:", text);
 
       let json;
       try {
@@ -71,7 +70,7 @@ const Signup = () => {
       }
 
     } catch (error) {
-      console.error("Error during signup:", error);
+      console.error("❌ Error during signup:", error);
       setSnackbar({
         open: true,
         message: 'Network error. Please check your connection.',
