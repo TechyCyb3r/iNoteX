@@ -26,7 +26,7 @@ const Login = () => {
     }
 
     try {
-      console.log("📡 Sending login payload:", { email, password });
+      // console.log("📡 Sending login payload:", { email, password });
       // console.log("🌐 API endpoint:", API.LOGIN);
 
       const response = await fetch(API.LOGIN, {

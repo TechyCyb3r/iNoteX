@@ -29,8 +29,8 @@ const Signup = () => {
       return;
     }
 
-    console.log("📤 Sending signup payload:", { name, email, password });
-    console.log("🌐 API endpoint:", API.SIGNUP);
+    // console.log("📤 Sending signup payload:", { name, email, password });
+    // console.log("🌐 API endpoint:", API.SIGNUP);
 
     try {
       const response = await fetch(API.SIGNUP, {
