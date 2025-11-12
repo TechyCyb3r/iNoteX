@@ -216,36 +216,26 @@ router.put('/update-password', fetchuser, async (req, res) => {
 // account deletion
 router.delete('/accdelete', fetchuser, async (req, res) => {
   try {
-    console.log("🧩 Delete Route Hit");
     const userId = req.user.id;
     const { password } = req.body;
-    console.log("🔹 Incoming password:", password);
 
     if (!password) {
-      console.log("⚠️ Password missing");
       return res.status(400).json({ success: false, error: "Password is required" });
     }
 
-    const user = await User.findById(userId);
-    console.log("👤 User found:", user ? "YES" : "NO");
-
+    // ✅ Include password field for bcrypt
+    const user = await User.findById(userId).select("+password");
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
-    console.log("🧂 PEPPER value:", process.env.PEPPER);
     const pepper = process.env.PEPPER || '';
     const isMatch = await bcrypt.compare(password + pepper, user.password);
-    console.log("🔐 Password match:", isMatch);
-
     if (!isMatch) {
-      console.log("❌ Incorrect password");
       return res.status(401).json({ success: false, error: "Incorrect password" });
     }
 
     await User.findByIdAndDelete(userId);
-    console.log("✅ User deleted");
-
     res.json({ success: true, message: "Account deleted successfully" });
 
   } catch (error) {
@@ -253,5 +243,6 @@ router.delete('/accdelete', fetchuser, async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error", details: error.message });
   }
 });
+
 
 module.exports = router;
