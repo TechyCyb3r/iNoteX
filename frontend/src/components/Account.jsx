@@ -25,6 +25,7 @@ const textFieldStyles = {
 const Account = () => {
   const [user, setUser] = useState({ name: '', email: '' });
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [nameData, setNameData] = useState({ name: '', password: '' });
   const [emailData, setEmailData] = useState({ email: '', password: '' });
   const [passwordData, setPasswordData] = useState({
@@ -55,23 +56,32 @@ const Account = () => {
           alert(json.error || 'Failed to load user');
         }
       } catch (error) {
-        console.error('Error fetching user:', error.message);
+        console.error('❌ Error fetching user:', error.message);
         alert('Network error while fetching user data');
       } finally {
         setLoading(false);
       }
     };
-
     fetchUser();
   }, []);
 
+  // ✅ Helper for JSON-safe fetch
+  const safeFetchJson = async (res) => {
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      console.warn('⚠️ Non-JSON response:', text);
+      return { success: false, error: text || 'Invalid server response' };
+    }
+  };
+
   // ✅ Update Name
   const handleNameUpdate = async () => {
-    if (!nameData.name || !nameData.password) {
-      alert('Please provide both name and password.');
-      return;
-    }
+    if (!nameData.name || !nameData.password)
+      return alert('Please provide both name and password.');
 
+    setSubmitting(true);
     try {
       const res = await fetch(API.UPDATE_NAME, {
         method: 'PUT',
@@ -82,27 +92,28 @@ const Account = () => {
         body: JSON.stringify(nameData),
       });
 
-      const json = await res.json();
+      const json = await safeFetchJson(res);
       if (res.ok && json.success) {
         setUser((prev) => ({ ...prev, name: nameData.name }));
-        alert('✅ Name updated successfully');
         setNameData({ ...nameData, password: '' });
+        alert('✅ Name updated successfully');
       } else {
         alert(json.error || 'Failed to update name');
       }
     } catch (err) {
-      console.error(err);
+      console.error('❌ Name update error:', err);
       alert('Network error while updating name');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   // ✅ Update Email
   const handleEmailUpdate = async () => {
-    if (!emailData.email || !emailData.password) {
-      alert('Please provide both email and password.');
-      return;
-    }
+    if (!emailData.email || !emailData.password)
+      return alert('Please provide both email and password.');
 
+    setSubmitting(true);
     try {
       const res = await fetch(API.UPDATE_EMAIL, {
         method: 'PUT',
@@ -113,34 +124,33 @@ const Account = () => {
         body: JSON.stringify(emailData),
       });
 
-      const json = await res.json();
+      const json = await safeFetchJson(res);
       if (res.ok && json.success) {
         setUser((prev) => ({ ...prev, email: emailData.email }));
-        alert('✅ Email updated successfully');
         setEmailData({ ...emailData, password: '' });
+        alert('✅ Email updated successfully');
       } else {
         alert(json.error || 'Failed to update email');
       }
     } catch (err) {
-      console.error(err);
+      console.error('❌ Email update error:', err);
       alert('Network error while updating email');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // ✅ Update Password
+  // ✅ Update Password (fixed)
   const handlePasswordUpdate = async () => {
     const { currentPassword, newPassword } = passwordData;
 
-    if (!currentPassword || !newPassword) {
-      alert('Please fill in both current and new passwords.');
-      return;
-    }
+    if (!currentPassword || !newPassword)
+      return alert('Please fill in both current and new passwords.');
 
-    if (currentPassword === newPassword) {
-      alert('New password must be different from the current password.');
-      return;
-    }
+    if (currentPassword === newPassword)
+      return alert('New password must be different from the current password.');
 
+    setSubmitting(true);
     try {
       const res = await fetch(API.UPDATE_PASSWORD, {
         method: 'PUT',
@@ -148,10 +158,13 @@ const Account = () => {
           'Content-Type': 'application/json',
           'auth-token': localStorage.getItem('token'),
         },
-        body: JSON.stringify(passwordData),
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
       });
 
-      const json = await res.json();
+      const json = await safeFetchJson(res);
       if (res.ok && json.success) {
         alert('✅ Password updated successfully');
         setPasswordData({ currentPassword: '', newPassword: '' });
@@ -159,23 +172,24 @@ const Account = () => {
         alert(json.error || 'Failed to update password');
       }
     } catch (err) {
-      console.error(err);
+      console.error('❌ Password update error:', err);
       alert('Network error while updating password');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // ✅ Delete Account
+  // ✅ Delete Account (fixed)
   const handleDeleteAccount = async () => {
-    if (deleteConfirmText !== 'DELETE') {
-      alert('Please type DELETE to confirm.');
-      return;
-    }
+    if (deleteConfirmText !== 'DELETE')
+      return alert('Please type DELETE to confirm.');
 
     const confirmed = window.confirm(
       'This will permanently delete your account. Are you sure?'
     );
     if (!confirmed) return;
 
+    setSubmitting(true);
     try {
       const res = await fetch(API.ACC_DELETE, {
         method: 'DELETE',
@@ -186,7 +200,7 @@ const Account = () => {
         body: JSON.stringify({ password: deletePassword }),
       });
 
-      const json = await res.json();
+      const json = await safeFetchJson(res);
       if (res.ok && json.success) {
         alert('✅ Account deleted successfully');
         localStorage.removeItem('token');
@@ -195,8 +209,10 @@ const Account = () => {
         alert(json.error || 'Failed to delete account');
       }
     } catch (err) {
-      console.error('Delete error:', err);
+      console.error('❌ Delete error:', err);
       alert('Network error while deleting account');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -257,7 +273,13 @@ const Account = () => {
         onChange={(e) => setNameData({ ...nameData, password: e.target.value })}
         sx={textFieldStyles}
       />
-      <Button variant="contained" fullWidth sx={{ mt: 1 }} onClick={handleNameUpdate}>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{ mt: 1 }}
+        onClick={handleNameUpdate}
+        disabled={submitting}
+      >
         Update Name
       </Button>
 
@@ -284,7 +306,13 @@ const Account = () => {
         onChange={(e) => setEmailData({ ...emailData, password: e.target.value })}
         sx={textFieldStyles}
       />
-      <Button variant="contained" fullWidth sx={{ mt: 1 }} onClick={handleEmailUpdate}>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{ mt: 1 }}
+        onClick={handleEmailUpdate}
+        disabled={submitting}
+      >
         Update Email
       </Button>
 
@@ -316,7 +344,13 @@ const Account = () => {
         }
         sx={textFieldStyles}
       />
-      <Button variant="contained" fullWidth sx={{ mt: 1 }} onClick={handlePasswordUpdate}>
+      <Button
+        variant="contained"
+        fullWidth
+        sx={{ mt: 1 }}
+        onClick={handlePasswordUpdate}
+        disabled={submitting}
+      >
         Update Password
       </Button>
 
@@ -349,7 +383,7 @@ const Account = () => {
         fullWidth
         sx={{ mt: 1 }}
         onClick={handleDeleteAccount}
-        disabled={deleteConfirmText !== 'DELETE' || !deletePassword}
+        disabled={submitting || deleteConfirmText !== 'DELETE' || !deletePassword}
       >
         Delete Account
       </Button>
