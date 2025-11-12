@@ -1,18 +1,16 @@
-// src/config/apiConfig.js
+export const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
-
+// All endpoints centralized
 export const API = {
-  BASE_URL,
-  LOGIN: `${BASE_URL}/api/auth/login`,
-  SIGNUP: `${BASE_URL}/api/auth/signup`,
-  GET_USER: `${BASE_URL}/api/auth/getuser`,
-  UPDATE_NAME: `${BASE_URL}/api/auth/update-name`,
-  UPDATE_EMAIL: `${BASE_URL}/api/auth/update-email`,
-  UPDATE_PASSWORD: `${BASE_URL}/api/auth/update-password`,
-  DELETE_ACCOUNT: `${BASE_URL}/api/auth/accdelete`,
-  GET_NOTES: `${BASE_URL}/api/notes/fetchallnotes`,
-  ADD_NOTE: `${BASE_URL}/api/notes/addnote`,
-  UPDATE_NOTE: `${BASE_URL}/api/notes/updatenote`,
-  DELETE_NOTE: `${BASE_URL}/api/notes/deletenote`,
+  SIGNUP: `${API_BASE}/api/auth/signup`,
+  LOGIN: `${API_BASE}/api/auth/login`,
+  GET_USER: `${API_BASE}/api/auth/getuser`,
+  UPDATE_NAME: `${API_BASE}/api/auth/update-name`,
+  UPDATE_EMAIL: `${API_BASE}/api/auth/update-email`,
+  UPDATE_PASSWORD: `${API_BASE}/api/auth/update-password`,
+  DELETE_ACCOUNT: `${API_BASE}/api/auth/accdelete`,
+  GET_NOTES: `${API_BASE}/api/notes/fetchallnotes`,
+  ADD_NOTE: `${API_BASE}/api/notes/addnote`,
+  DELETE_NOTE: `${API_BASE}/api/notes/deletenote`,
+  UPDATE_NOTE: `${API_BASE}/api/notes/updatenote`,
 };
