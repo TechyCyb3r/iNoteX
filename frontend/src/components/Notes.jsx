@@ -160,8 +160,8 @@ function Notes({ showAlert }) {
       </div>
 
       {/* ✅ Notes Display Section */}
-      <div className="row my-6">
-        <div className="container mx-4" style={{ color: 'white' }}>
+      <div className="row">
+        <div className="container mx-2 " style={{ color: 'white' }}>
           {notes.length === 0 && <h5>No notes to display</h5>}
         </div>
 

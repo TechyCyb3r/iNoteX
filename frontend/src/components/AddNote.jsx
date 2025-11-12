@@ -173,7 +173,7 @@ const AddNote = ({ showAlert }) => {
         variant="h4"
         sx={{
           mt: 2,
-          mb: -5,
+          mb: 2,
           color: '#ffffff',
           fontWeight: 600,
         }}
