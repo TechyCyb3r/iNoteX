@@ -1,173 +1,190 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Typography, TextField, Button, Snackbar, Alert, InputAdornment, Paper } from '@mui/material';
+import {
+  Typography, TextField, Button, Snackbar, Alert,
+  InputAdornment, Paper
+} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import { API } from '../config/apiconfig';  // ✅ Correct relative path (2 dots if inside Context)
 
 const Login = () => {
-    const [credentials, setCredentials] = useState({ email: "", password: "" });
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-    const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+  const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
-        if (!credentials.email || !credentials.password) {
-            setSnackbar({ open: true, message: 'Please fill all fields', severity: 'warning' });
-            return;
-        }
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-        try {
-            console.log("📡 Sending request to:", API.LOGIN);
+    const { email, password } = credentials;
 
-            const response = await fetch(API.LOGIN, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(credentials)
-            });
+    if (!email || !password) {
+      setSnackbar({ open: true, message: 'Please fill all fields.', severity: 'warning' });
+      return;
+    }
 
-            const json = await response.json();
-            console.log("🧾 Response:", json);
+    try {
+      console.log("📤 Sending login payload:", { email, password });
 
-            if (json.success) {
-                localStorage.setItem("token", json.authToken);
+      const response = await fetch(import.meta.env.VITE_LOGIN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), password }),
+      });
 
-                // Fetch user details
-                const userRes = await fetch(API.GET_USER, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'auth-token': json.authToken,
-                    },
-                });
+      const text = await response.text();
+      console.log("Login raw response:", text);
 
-                const userData = await userRes.json();
-                console.log("👤 Logged in user:", userData);
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch (err) {
+        throw new Error(`Invalid JSON response: ${text.slice(0, 100)}`);
+      }
 
-                setSnackbar({ open: true, message: 'Login successful!', severity: 'success' });
-                setTimeout(() => navigate("/"), 1000);
-            } else {
-                setSnackbar({ open: true, message: json.error || 'Invalid credentials', severity: 'error' });
-            }
-        } catch (error) {
-            console.error("❌ Login error:", error);
-            setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' });
-        }
-    };
+      if (json.success) {
+        localStorage.setItem("token", json.authToken);
 
-    const onChange = (e) => {
-        setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    };
+        // ✅ Fetch user info after successful login
+        const userRes = await fetch(import.meta.env.VITE_GETUSER, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': json.authToken
+          }
+        });
 
-    return (
-        <Paper
-            elevation={10}
-            sx={{
-                p: 4,
-                my: 2,
-                mx: 'auto',
-                maxWidth: 600,
-                width: '90%',
-                borderRadius: 4,
-                backgroundColor: 'rgba(176, 224, 230, 0.1)',
-                backdropFilter: 'blur(12px)',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: '#fff'
-            }}
+        const userData = await userRes.json();
+        console.log("👤 Logged-in user data:", userData);
+
+        setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
+        setTimeout(() => navigate("/"), 2000);
+      } else {
+        setSnackbar({
+          open: true,
+          message: json.error || 'Invalid credentials. Please try again.',
+          severity: 'error'
+        });
+      }
+
+    } catch (error) {
+      console.error("❌ Error during login:", error);
+      setSnackbar({
+        open: true,
+        message: 'Network error. Please check your connection.',
+        severity: 'error'
+      });
+    }
+  };
+
+  const handleChange = (e) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  return (
+    <Paper
+      elevation={10}
+      sx={{
+        p: 4,
+        my: 2,
+        mx: 'auto',
+        maxWidth: 600,
+        width: '90%',
+        borderRadius: 4,
+        backgroundColor: 'rgba(176, 224, 230, 0.1)',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        color: '#fff'
+      }}
+    >
+      <Typography variant="h4" gutterBottom align="center">
+        Login <LoginIcon fontSize="large" sx={{ verticalAlign: 'middle', color: '#00e5ff' }} />
+      </Typography>
+
+      <form onSubmit={handleLogin}>
+        <TextField
+          fullWidth
+          label="Email"
+          name="email"
+          value={credentials.email}
+          onChange={handleChange}
+          margin="normal"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon sx={{ color: '#00e5ff' }} />
+              </InputAdornment>
+            )
+          }}
+          sx={{ input: { color: 'white' }, label: { color: 'white' } }}
+        />
+
+        <TextField
+          fullWidth
+          type="password"
+          label="Password"
+          name="password"
+          value={credentials.password}
+          onChange={handleChange}
+          margin="normal"
+          variant="outlined"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockIcon sx={{ color: '#00e5ff' }} />
+              </InputAdornment>
+            )
+          }}
+          sx={{ input: { color: 'white' }, label: { color: 'white' } }}
+        />
+
+        <Button
+          fullWidth
+          type="submit"
+          variant="contained"
+          sx={{
+            mt: 3,
+            backgroundColor: '#00e5ff',
+            color: '#000',
+            fontWeight: 'bold',
+            '&:hover': { backgroundColor: '#00bcd4' }
+          }}
+          endIcon={<LoginIcon />}
         >
-            <Typography variant="h4" gutterBottom align="center">
-                Login <LoginIcon fontSize="large" sx={{ verticalAlign: 'middle', color: '#00e5ff' }} />
-            </Typography>
+          Login
+        </Button>
 
-            <form onSubmit={handleLogin}>
-                <TextField
-                    fullWidth
-                    label="Email"
-                    name="email"
-                    value={credentials.email}
-                    onChange={onChange}
-                    margin="normal"
-                    variant="outlined"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <EmailIcon sx={{ color: '#00e5ff' }} />
-                            </InputAdornment>
-                        )
-                    }}
-                    sx={{ input: { color: 'white' }, label: { color: 'white' } }}
-                />
+        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+          Don’t have an account?
+          <Button
+            component={Link}
+            to="/signup"
+            variant="text"
+            sx={{ color: '#00e5ff', textTransform: 'none', ml: 1 }}
+            endIcon={<PersonAddAlt1Icon />}
+          >
+            Sign Up
+          </Button>
+        </Typography>
+      </form>
 
-                <TextField
-                    fullWidth
-                    type="password"
-                    label="Password"
-                    name="password"
-                    value={credentials.password}
-                    onChange={onChange}
-                    margin="normal"
-                    variant="outlined"
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <LockIcon sx={{ color: '#00e5ff' }} />
-                            </InputAdornment>
-                        )
-                    }}
-                    sx={{ input: { color: 'white' }, label: { color: 'white' } }}
-                />
-
-                <Button
-                    fullWidth
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                        mt: 3,
-                        backgroundColor: '#00e5ff',
-                        color: '#000',
-                        fontWeight: 'bold',
-                        '&:hover': { backgroundColor: '#00bcd4' }
-                    }}
-                    endIcon={<LoginIcon />}
-                >
-                    Login
-                </Button>
-
-                <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-                    Don't have an account?
-                    <Button
-                        component={Link}
-                        to="/signup"
-                        variant="text"
-                        sx={{ color: '#00e5ff', textTransform: 'none', ml: 1 }}
-                        endIcon={<PersonAddAlt1Icon />}
-                    >
-                        Sign Up
-                    </Button>
-                </Typography>
-            </form>
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={4000}
-                onClose={() => setSnackbar({ ...snackbar, open: false })}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            >
-                <Alert
-                    onClose={() => setSnackbar({ ...snackbar, open: false })}
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                    variant="filled"
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
-        </Paper>
-    );
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Paper>
+  );
 };
 
 export default Login;
