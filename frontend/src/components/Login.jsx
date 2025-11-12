@@ -7,12 +7,9 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import { API } from '../config/apiconfig';  // ✅ Import API endpoints
 
 const Login = () => {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-  const loginURL = `${BASE_URL}/api/auth/login`;
-  const getUserURL = `${BASE_URL}/api/auth/getuser`;
-
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const navigate = useNavigate();
@@ -30,9 +27,9 @@ const Login = () => {
 
     try {
       console.log("📡 Sending login payload:", { email, password });
-      console.log("🌐 API endpoint:", loginURL);
+      console.log("🌐 API endpoint:", API.LOGIN);
 
-      const response = await fetch(loginURL, {
+      const response = await fetch(API.LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), password }),
@@ -52,7 +49,7 @@ const Login = () => {
         localStorage.setItem("token", json.authToken);
 
         // ✅ Fetch user details
-        const userRes = await fetch(getUserURL, {
+        const userRes = await fetch(API.GET_USER, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
