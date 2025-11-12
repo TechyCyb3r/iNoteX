@@ -45,6 +45,10 @@ const AddNote = ({ showAlert }) => {
     // if (!trimmedTitle || trimmedTitle.length < 5)
     //   return showError('📌 Title must be at least 5 characters', 'error');
 
+    if (!trimmedDescription && !trimmedTitle) {
+      return showError('📝 Please enter a title or description', 'warning');
+    }
+
     try {
       await addNote(trimmedTitle, trimmedDescription, trimmedTag);
       showAlert('✅ Note added successfully!', 'success');
