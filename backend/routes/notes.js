@@ -19,8 +19,13 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 
 // Route 2: Add a new node using POST "/api/auth/addnote "
 router.post('/addnote', fetchuser, [
-    body('title', 'Enter a valid title').isLength({ min: 3 }),
-    body('description', 'Description must be atleast 5 characters').isLength({ min: 5 }),
+    // using check
+    // body('title', 'Enter a valid title').isLength({ min: 3 }),
+    // body('description', 'Description must be atleast 5 characters').isLength({ min: 5 }),
+
+    // without check
+    body('title', 'Enter a valid title'),
+    body('description', 'Description must be atleast 5 characters'),
 ], async (req, res) => {
 
     try {

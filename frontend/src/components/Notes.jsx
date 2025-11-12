@@ -36,10 +36,10 @@ function Notes({ showAlert }) {
 
   // ✅ Update note in backend + UI
   const handleUpdateNote = async () => {
-    if (note.title.trim().length < 5 || note.description.trim().length < 5) {
-      showAlert('⚠️ Title and description must be at least 5 characters long', 'warning');
-      return;
-    }
+    // if (note.title.trim().length < 3 || note.description.trim().length < 5) {
+    //   showAlert('⚠️ Title and description must be at least 5 characters long', 'warning');
+    //   return;
+    // }
 
     try {
       await editNote(note.id, note.title, note.description, note.tag);
