@@ -37,7 +37,7 @@ function Notes({ showAlert }) {
   // ✅ Update note in backend + UI
   const handleUpdateNote = async () => {
     if (note.title.trim().length < 2 || note.description.trim().length < 2) {
-      showAlert('⚠️ Title and description must be at least 5 characters long', 'warning');
+      showAlert('⚠️ Title and description must be at least 2 characters long', 'warning');
       return;
     }
 
