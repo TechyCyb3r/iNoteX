@@ -20,7 +20,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 // Route 2: Add a new node using POST "/api/auth/addnote "
 router.post('/addnote', fetchuser, [
     body('title', 'Enter a valid title').isLength({ min: 2 }),
-    body('description', 'Description must be atleast 5 characters').isLength({ min: 2 }),
+    body('description', 'Description must be atleast 2 characters').isLength({ min: 2 }),
 ], async (req, res) => {
 
     try {
@@ -44,9 +44,18 @@ router.post('/addnote', fetchuser, [
 })
 
 
-// Route 3: Update an existing Note using POST "/api/auth/updatenote"
-router.put('/updatenote/:id', fetchuser, async (req, res) => {
-    const { title, description, tag, date} = req.body;
+// Route 3: Update an existing Note using PUT "/api/auth/updatenote"
+router.put('/updatenote/:id', fetchuser, [
+    body('title', 'Enter a valid title').optional().isLength({ min: 2 }),
+    body('description', 'Description must be at least 2 characters').optional().isLength({ min: 2 }),
+], async (req, res) => {
+    // Validate request
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, description, tag, date } = req.body;
     // Create a newnote object 
     const newNote = {};
 
