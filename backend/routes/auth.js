@@ -49,7 +49,6 @@ router.post('/signup', [
         }
 
         const authToken = jwt.sign(data, JWT_SECRET);
-        console.log(authToken);
         success = true;
         // Send success:true and token as message of user creation
         res.json({success, authToken })

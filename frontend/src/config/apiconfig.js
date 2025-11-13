@@ -2,6 +2,7 @@
 
 // Get base URL from .env
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://i-note-x.vercel.app";
+// export const BASE_URL = "http://localhost:5000";
 
 // ✅ All API endpoints centralized here
 export const API = {

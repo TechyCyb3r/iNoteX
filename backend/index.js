@@ -9,10 +9,13 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: [
+    "http://localhost:3000",
     "http://localhost:5173",
+    "https://inote-x.vercel.app",   // frontend (NO dash)
+    "https://i-note-x.vercel.app",  // backend (WITH dash)
+    "https://inotex.thehimanshu.tech",
     /\.vercel\.app$/,
-    /\.thehimanshu\.tech$/,
-    "https://inotex.thehimanshu.tech"
+    /\.thehimanshu\.tech$/
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
