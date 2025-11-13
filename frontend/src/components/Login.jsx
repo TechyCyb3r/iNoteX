@@ -26,13 +26,17 @@ const Login = () => {
     }
 
     try {
+      console.log("📡 Sending login payload:", { email, password });
+      console.log("🌐 API endpoint:", API.LOGIN);
+
       const response = await fetch(API.LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), password }),
+        // body: JSON.stringify({ email: email.trim(), password }),
       });
 
       const text = await response.text();
+      console.log("📦 Login raw response:", text);
 
       let json;
       try {
@@ -54,6 +58,7 @@ const Login = () => {
         });
 
         const userData = await userRes.json();
+        console.log("👤 Logged-in user:", userData);
 
         setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
         setTimeout(() => navigate("/"), 2000);
