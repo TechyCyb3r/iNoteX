@@ -26,7 +26,7 @@ export default function ParticlesBackground() {
               color: { value: "#050A30" }, // Deep navy blue
             },
             fullScreen: { enable: false }, // Set to false if you're handling layout with CSS
-            fpsLimit: 120,
+            fpsLimit: 30,
             particles: {
               color: { value: "#00ffff" },
               links: {
