@@ -7,7 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import { API } from '../config/apiconfig';  // ✅ Import API endpoints
+import { API } from '../config/apiconfig';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });

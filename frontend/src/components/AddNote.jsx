@@ -84,8 +84,8 @@ const AddNote = (props) => {
                 </Box>
             </Paper>
 
-            <Typography variant="h4" sx={{ mt: 2, mb: -5, color: '#ffffff', fontWeight: 600 }}>
-                🗂️ Your Notes: -
+            <Typography variant="h4" sx={{ mt: 2, mb: 2, color: '#ffffff', fontWeight: 600 }}>
+                🗂️ Your Notes
             </Typography>
         </>
     );
