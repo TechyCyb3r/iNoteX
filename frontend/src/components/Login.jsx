@@ -17,68 +17,74 @@ const Login = () => {
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    const { email, password } = credentials;
+  e.preventDefault();
+  const { email, password } = credentials;
 
-    if (!email || !password) {
-      setSnackbar({ open: true, message: 'Please fill all fields.', severity: 'warning' });
+  if (!email || !password) {
+    setSnackbar({ open: true, message: 'Please fill all fields.', severity: 'warning' });
+    return;
+  }
+
+  try {
+    console.log("📡 Sending login payload:", { email: email.trim(), password });
+    console.log("🌐 API endpoint:", API.LOGIN);
+
+    const response = await fetch(API.LOGIN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.trim(), password: password }),
+      // If your backend uses cookie-based auth, enable the next line and ensure server CORS has credentials: true
+      // credentials: 'include'
+    });
+
+    // Read JSON even if status is 400 so we can show server message
+    const data = await response.json().catch((err) => {
+      throw new Error('Server returned invalid JSON');
+    });
+
+    console.log("📦 Login response:", response.status, data);
+
+    if (!response.ok) {
+      // Backend likely returns { errors: [...] } or { message: '...' }
+      const errMsg = data.errors ? data.errors.map(e => e.msg).join(', ') : (data.message || data.error || 'Login failed');
+      setSnackbar({ open: true, message: errMsg, severity: 'error' });
       return;
     }
 
-    try {
-      console.log("📡 Sending login payload:", { email, password });
-      console.log("🌐 API endpoint:", API.LOGIN);
+    // success path
+    if (data.success && data.authToken) {
+      localStorage.setItem("token", data.authToken);
 
-      const response = await fetch(API.LOGIN, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify({ email: email.trim(), password }),
+      // fetch user details (optional)
+      const userRes = await fetch(API.GET_USER, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'auth-token': data.authToken,
+        },
       });
+      const userData = await userRes.json().catch(() => null);
+      console.log("👤 Logged-in user:", userData);
 
-      const text = await response.text();
-      console.log("📦 Login raw response:", text);
-
-      let json;
-      try {
-        json = JSON.parse(text);
-      } catch (err) {
-        throw new Error(`Invalid JSON response: ${text.slice(0, 100)}`);
-      }
-
-      if (json.success) {
-        localStorage.setItem("token", json.authToken);
-
-        // ✅ Fetch user details
-        const userRes = await fetch(API.GET_USER, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'auth-token': json.authToken,
-          },
-        });
-
-        const userData = await userRes.json();
-        console.log("👤 Logged-in user:", userData);
-
-        setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
-        setTimeout(() => navigate("/"), 2000);
-      } else {
-        setSnackbar({
-          open: true,
-          message: json.error || 'Invalid credentials. Please try again.',
-          severity: 'error'
-        });
-      }
-
-    } catch (error) {
-      console.error("❌ Error during login:", error);
+      setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
+      setTimeout(() => navigate("/"), 1200);
+    } else {
       setSnackbar({
         open: true,
-        message: 'Network or server error. Please try again later.',
+        message: data.error || data.message || 'Invalid credentials. Please try again.',
         severity: 'error'
       });
     }
-  };
+
+  } catch (error) {
+    console.error("❌ Error during login:", error);
+    setSnackbar({
+      open: true,
+      message: error.message || 'Network or server error. Please try again later.',
+      severity: 'error'
+    });
+  }
+};
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
