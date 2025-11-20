@@ -10,7 +10,18 @@ import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 const About = () => {
   return (
-    <Paper elevation={10} sx={{ p: 4, my: 2, borderRadius: 4, background: 'rgba(255, 255, 255, 0.07)', backdropFilter: 'blur(12px)', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', minHeight: '100vh', }} >
+    <Paper elevation={10} sx={{
+  p: 4,
+  my: 2,
+  borderRadius: 4,
+  background: 'rgba(255, 255, 255, 0.07)',
+  backdropFilter: 'blur(12px)',
+  boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  color: '#fff',
+  minHeight: 'auto',          /* ← CHANGE */
+  width: '100%',
+}}>
       <Typography variant="h3" textAlign="center" gutterBottom fontWeight={700}>
         About <span style={{ color: '#1976d2' }}>iNoteX</span>
       </Typography>

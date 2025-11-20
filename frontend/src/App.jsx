@@ -28,22 +28,20 @@ function App() {
         <BrowserRouter>
 
           <BackGround id="tsparticles" />
-          <div style={{ position: 'relative' }}>
-          <Navbar />
-
-          {/* Alert component to show messages */}
-          <div className="times-new-roman-text">
-            <Alert message={alertMessage?.msg} type={alertMessage?.type} />
-
-            <div className="container">
-              <Routes>
-                <Route path='/' element={<Home showAlert={showAlert} />} />
-                <Route path='/about' element={<About />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/signup' element={<Signup />} />
-                <Route path='/profile' element={<Profile/>} />
-                <Route path='/account' element={<Account/>} />
-              </Routes>
+          <div className="app-screen">
+            <Navbar />
+            {/* Alert component to show messages */}
+            <div className="times-new-roman-text">
+              <Alert message={alertMessage?.msg} type={alertMessage?.type} />
+              <div className="container">
+                <Routes>
+                  <Route path='/' element={<Home showAlert={showAlert} />} />
+                  <Route path='/about' element={<About />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/signup' element={<Signup />} />
+                  <Route path='/profile' element={<Profile />} />
+                  <Route path='/account' element={<Account />} />
+                </Routes>
               </div>
             </div>
           </div>

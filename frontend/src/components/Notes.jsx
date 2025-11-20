@@ -46,7 +46,6 @@ function Notes({ showAlert }) {
       showAlert('✅ Note updated successfully', 'success');
       refClose.current.click();
     } catch (err) {
-      console.error('❌ Error updating note:', err);
       showAlert('Failed to update note. Please try again.', 'danger');
     }
   };
@@ -160,8 +159,8 @@ function Notes({ showAlert }) {
       </div>
 
       {/* ✅ Notes Display Section */}
-      <div className="row">
-        <div className="container mx-2 " style={{ color: 'white' }}>
+      <div className="row" style={{ minHeight: "auto", paddingBottom: "60px" }}>
+        <div className="container mx-1 " style={{ color: 'white' }}>
           {notes.length === 0 && <h5>No notes to display</h5>}
         </div>
 

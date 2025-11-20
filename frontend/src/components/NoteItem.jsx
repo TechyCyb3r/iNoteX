@@ -28,7 +28,6 @@ const NoteItem = ({ note, updateNote, showAlert }) => {
       await deleteNote(note._id);
       showAlert('🗑️ Note deleted successfully!', 'success');
     } catch (err) {
-      console.error('❌ Error deleting note:', err);
       showAlert('Failed to delete note. Please try again.', 'danger');
     } finally {
       setOpenConfirm(false);
@@ -50,6 +49,8 @@ const NoteItem = ({ note, updateNote, showAlert }) => {
             boxShadow: 3,
             backgroundColor: 'rgba(255,255,255,0.05)',
             backdropFilter: 'blur(10px)',
+            overflow: 'hidden',
+            WebkitMaskImage: '-webkit-radial-gradient(white, black)',
             border: '1px solid rgba(255,255,255,0.2)',
             p: 1,
             transition: 'all 0.2s ease-in-out',

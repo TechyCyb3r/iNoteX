@@ -35,11 +35,27 @@ const AddNote = (props) => {
 
     return (
         <>
-            <Paper elevation={10} sx={{
-                mx: "auto", p: 4, my: 2, maxWidth: 600, width: '100%', borderRadius: 4,
-                backgroundColor: 'rgba(176, 224, 230, 0.1)', backdropFilter: 'blur(12px)',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-            }}>
+            <Paper
+  elevation={10}
+  sx={{
+    mx: "auto",
+    p: 4,
+    my: 2,
+    maxWidth: 600,
+    width: "100%",
+    borderRadius: 4,
+    backgroundColor: "rgba(176, 224, 230, 0.1)",
+    backdropFilter: "blur(12px)",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    color: "#fff",
+
+    /** 100% FIX BELOW **/
+    position: "relative",
+    zIndex: 10,
+    paddingBottom: "60px",
+  }}
+>
 
                 <Typography variant="h5" gutterBottom sx={{
                     display: 'flex', alignItems: 'center', fontWeight: 'bold', color: '#00d4ff',

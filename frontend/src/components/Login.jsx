@@ -26,9 +26,6 @@ const Login = () => {
   }
 
   try {
-    console.log("📡 Sending login payload:", { email: email.trim(), password });
-    console.log("🌐 API endpoint:", API.LOGIN);
-
     const response = await fetch(API.LOGIN, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -41,8 +38,6 @@ const Login = () => {
     const data = await response.json().catch((err) => {
       throw new Error('Server returned invalid JSON');
     });
-
-    console.log("📦 Login response:", response.status, data);
 
     if (!response.ok) {
       // Backend likely returns { errors: [...] } or { message: '...' }
@@ -64,8 +59,6 @@ const Login = () => {
         },
       });
       const userData = await userRes.json().catch(() => null);
-      console.log("👤 Logged-in user:", userData);
-
       setSnackbar({ open: true, message: 'Login successful! Redirecting...', severity: 'success' });
       setTimeout(() => navigate("/"), 1200);
     } else {

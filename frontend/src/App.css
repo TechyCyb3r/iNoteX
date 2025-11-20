@@ -1,11 +1,41 @@
 .times-new-roman-text {
   font-family: "Times New Roman", Times, serif;
 }
+/*
 #tsparticles {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 100dvh;
+  z-index: 0; /* Behind your main app content
+} */
+
+
+/* Important for mobile */
+html, body, #root {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  z-index: 0; /* Behind your main app content */
+  background: #050A30; /* same as particles bg */
+  overflow-x: hidden;
 }
+
+/* App content wrapper */
+.app-wrapper {
+  position: relative;
+  min-height: 100dvh;  /* dynamic viewport height */
+  z-index: 1;          /* content above particles */
+}
+
+/* container SHOULD NOT force height */
+.container {
+  min-height: auto !important;
+}
+
+.app-screen {
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
